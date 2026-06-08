@@ -653,9 +653,15 @@ function toggleSpeakAll() {
     return;
   }
   const a = ARTICLES[cur];
-  const text = a.title + '. ' + a.body;
+  // 用日文朗讀，不用中文
+  window.speechSynthesis.cancel();
+  const voices = window.speechSynthesis.getVoices();
+  // 找日文語音
+  const jaVoice = voices.find(v => v.lang.startsWith('ja')) || voices[0];
+  const text = a.title + '。' + a.body;
   utt = new SpeechSynthesisUtterance(text);
-  utt.lang = a.lang === 'japanese' ? 'ja-JP' : 'en-US';
+  utt.lang = jaVoice ? jaVoice.lang : 'ja-JP';
+  utt.voice = jaVoice;
   utt.rate = 0.85;
   utt.onend = () => { speaking = false; document.getElementById('btnSpeakAll').classList.remove('active'); };
   speaking = true;
@@ -666,8 +672,11 @@ function toggleSpeakAll() {
 function speakWord() {
   if (!curWord || !window.speechSynthesis) return;
   window.speechSynthesis.cancel();
+  const voices = window.speechSynthesis.getVoices();
+  const jaVoice = voices.find(v => v.lang.startsWith('ja')) || voices[0];
   const u = new SpeechSynthesisUtterance(curWord);
-  u.lang = ARTICLES[cur].lang === 'japanese' ? 'ja-JP' : 'en-US';
+  u.lang = jaVoice ? jaVoice.lang : (ARTICLES[cur].lang === 'japanese' ? 'ja-JP' : 'en-US');
+  u.voice = jaVoice;
   u.rate = 0.8;
   window.speechSynthesis.speak(u);
 }

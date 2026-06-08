@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>50音學習卡</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#faf8f4;
+  --card:#ffffff;
+  --text:#2c2420;
+  --text2:#6b5e54;
+  --accent:#e85d75;
+  --accent2:#5b8dd9;
+  --border:#ede8e0;
+  --shadow:0 2px 12px rgba(0,0,0,.08);
+  --hiragana:#e85d75;
+  --katakana:#5b8dd9;
+}
+html,body{height:100%}
+body{
+  font-family:'Inter','Noto Sans JP',system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+header{
+  display:flex;
+  align-items:center;
+  padding:14px 24px;
+  border-bottom:1px solid var(--border);
+  background:#fff;
+  flex-shrink:0;
+  gap:12px;
+  flex-wrap:wrap;
+}
+header h1{
+  font-size:15px;
+  font-weight:600;
+  letter-spacing:.08em;
+  color:var(--text2);
+  margin:0 auto;
+}
+.tab-btn{
+  font-size:13px;
+  padding:5px 12px;
+  border:1px solid var(--border);
+  border-radius:20px;
+  background:#fff;
+  color:var(--text2);
+  cursor:pointer;
+  font-family:inherit;
+  transition:all .15s;
+}
+.tab-btn:hover{border-color:var(--accent)}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.tab-btn.k{active:var(--accent2)}
+.tab-btn.k.active{background:var(--accent2);border-color:var(--accent2)}
+
+.main{
+  flex:1;
+  overflow-y:auto;
+  padding:24px 20px;
+}
+
+/* ── Row labels ── */
+.row-labels{
+  display:flex;
+  padding-left:36px;
+  margin-bottom:8px;
+}
+.row-label{
+  width:56px;
+  text-align:center;
+  font-size:11px;
+  font-weight:600;
+  color:var(--text2);
+  letter-spacing:.05em;
+}
+
+/* ── Kana Grid ── */
+.kana-grid{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.kana-row{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.row-tag{
+  width:30px;
+  text-align:center;
+  font-size:11px;
+  font-weight:700;
+  color:var(--text2);
+  flex-shrink:0;
+}
+.cards{
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+}
+
+/* ── Card ── */
+.card{
+  width:52px;
+  height:68px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:all .18s;
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+  user-select:none;
+}
+.card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 6px 20px rgba(0,0,0,.12);
+}
+.card:active{
+  transform:translateY(0);
+  box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+.card.hiragana{border-top:3px solid var(--hiragana)}
+.card.katakana{border-top:3px solid var(--katakana)}
+.card.dakuten,.card.combination{opacity:.85}
+.card .big{
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:26px;
+  font-weight:700;
+  line-height:1;
+  color:var(--text);
+}
+.card .small{
+  font-size:10px;
+  color:var(--text2);
+  margin-top:2px;
+}
+.card .romaji{
+  font-size:11px;
+  color:var(--text2);
+  font-weight:500;
+  margin-top:2px;
+}
+.card .play{
+  position:absolute;
+  bottom:4px;
+  right:5px;
+  font-size:10px;
+  opacity:0;
+  transition:opacity .15s;
+}
+.card:hover .play{opacity:.5}
+
+/* ── Sound mark rows ── */
+.sound-row{
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+  padding-left:36px;
+  margin:4px 0;
+}
+.sound-tag{
+  font-size:11px;
+  color:var(--text2);
+  font-weight:600;
+  padding:2px 8px;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:12px;
+}
+
+/* ── Card Detail Modal ── */
+.modal-bg{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:300;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .2s;
+}
+.modal-bg.show{opacity:1;pointer-events:auto}
+.modal{
+  background:#fff;
+  border-radius:16px;
+  padding:32px;
+  width:280px;
+  text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.2);
+  transform:scale(.9);
+  transition:transform .2s;
+}
+.modal-bg.show .modal{transform:scale(1)}
+.modal-hiragana{
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:80px;
+  font-weight:700;
+  line-height:1;
+  color:var(--hiragana);
+}
+.modal-katakana{
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:48px;
+  font-weight:700;
+  color:var(--katakana);
+}
+.modal-romaji{
+  font-size:20px;
+  color:var(--text2);
+  margin-top:4px;
+  font-weight:600;
+}
+.modal-example{
+  margin-top:16px;
+  font-size:14px;
+  color:var(--text);
+  background:var(--bg);
+  border-radius:8px;
+  padding:10px 14px;
+}
+.modal-example-word{
+  font-family:'Noto Sans JP',sans-serif;
+  font-size:22px;
+  font-weight:700;
+  color:var(--text);
+}
+.modal-example-trans{
+  font-size:12px;
+  color:var(--text2);
+  margin-top:4px;
+}
+.modal-btns{
+  display:flex;
+  gap:8px;
+  margin-top:16px;
+}
+.modal-btns button{
+  flex:1;
+  font-size:14px;
+  padding:8px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:#fff;
+  cursor:pointer;
+  font-family:inherit;
+}
+.modal-btns .speak-btn{background:var(--accent);color:#fff;border-color:var(--accent)}
+.modal-close{
+  margin-top:10px;
+  font-size:12px;
+  color:var(--text2);
+  cursor:pointer;
+  padding:4px;
+}
+.modal-close:hover{color:var(--text)}
+
+/* ── Progress ── */
+.progress-bar{
+  height:3px;
+  background:var(--border);
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:400;
+}
+.progress-fill{
+  height:100%;
+  background:var(--accent);
+  transition:width .3s ease;
+  width:0%;
+}
+
+/* ── Responsive ── */
+@media(max-width:500px){
+  .card{width:46px;height:60px}
+  .card .big{font-size:22px}
+  .cards{gap:4px}
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<header>
+  <button class="tab-btn active" id="tabHira" onclick="switchTab('hiragana')">平假名</button>
+  <button class="tab-btn" id="tabKana" onclick="switchTab('katakana')">片假名</button>
+  <button class="tab-btn" id="tabBoth" onclick="switchTab('both')">混合</button>
+  <h1>50音學習卡</h1>
+</header>
+
+<div class="main" id="main"></div>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-hiragana" id="mHira"></div>
+    <div class="modal-katakana" id="mKana"></div>
+    <div class="modal-romaji" id="mRoma"></div>
+    <div class="modal-example">
+      <div class="modal-example-word" id="mExWord"></div>
+      <div class="modal-example-trans" id="mExTrans"></div>
+    </div>
+    <div class="modal-btns">
+      <button class="speak-btn" onclick="speakModal()">🔊 聽發音</button>
+      <button onclick="nextCard()">下一個 →</button>
+    </div>
+    <div class="modal-close" onclick="closeModal()">關閉</div>
+  </div>
+</div>
+
+<script>
+// ─── 50音 Data ────────────────────────────────────────────────
+const KANA = {
+  vowels: ['a','i','u','e','o'],
+  rows: [
+    {kai:'k',ch:'か',ks:'カ',rom:['ka','ki','ku','ke','ko'],ex:['可',null,'果物',null,'子']},
+    {kai:'s',ch:'さ',ks:'サ',rom:['sa','si','su','se','so'],ex:['桜',null,null,null,null]},
+    {kai:'t',ch:'た',ks:'タ',rom:['ta','ti','tu','te','to'],ex:['旅',null,null,'手',null]},
+    {kai:'n',ch:'な',ks:'ナ',rom:['na','ni','nu','ne','no'],ex:['夏',null,null,null,null]},
+    {kai:'h',ch:'は',ks:'ハ',rom:['na','ni','nu','ne','no'],ex:['花',null,null,null,null]},
+    {kai:'m',ch:'ま',ks:'マ',rom:['ma','mi','mu','me','mo'],ex:['間',null,null,null,null]},
+    {kai:'y',ch:'や',ks:'ヤ',rom:['ya',null,'yu','ya','yo'],ex:[null,null,'湯',null,null],rowLen:3},
+    {kai:'r',ch:'ら',ks:'ラ',rom:['ra','ri','ru','re','ro'],ex:['拉麵',null,null,null,null]},
+    {kai:'w',ch:'わ',ks:'ワ',rom:['wa',null,null,null,'wo'],ex:[null,null,null,null,null],rowLen:1},
+    {kai:'g',ch:'が',ks:'ガ',rom:['ga','gi','gu','ge','go'],ex:null,isSound:true},
+    {kai:'z',ch:'ざ',ks:'ザ',rom:['za','zi','zu','ze','zo'],ex:null,isSound:true},
+    {kai:'d',ch:'だ',ks:'ダ',rom:['da','di','du','de','do'],ex:null,isSound:true},
+    {kai:'b',ch:'ば',ks:'バ',rom:['ba','bi','bu','be','bo'],ex:null,isSound:true},
+    {kai:'p',ch:'ぱ',ks:'パ',rom:['pa','pi','pu','pe','po'],ex:null,isSound:true},
+  ],
+  vowelsKana: [
+    {ch:'あ',ks:'ア',rom:'a',ex:'苹果'},
+    {ch:'い',ks:'イ',rom:'i',ex:null},
+    {ch:'う',ks:'ウ',rom:'u',ex:'雨'},
+    {ch:'え',ks:'エ',rom:'e',ex:'絵'},
+    {ch:'お',ks:'オ',rom:'o',ex:'男'}
+  ],
+  specialRows: [
+    {ch:'や',ks:'ヤ',rom:'ya',ex:'夜'},
+    {ch:'ゆ',ks:'ユ',rom:'yu',ex:'温泉'},
+    {ch:'よ',ks:'ヨ',rom:'yo',ex:'世'},
+    {ch:'わ',ks:'ワ',rom:'wa',ex:null},
+    {ch:'を',ks:'ヲ',rom:'wo',ex:null},
+    {ch:'ん',ks:'ン',rom:'n',ex:null}
+  ]
+};
+
+const EXAMPLES = {
+  'ka':'可愛い / 可愛的', 'ki':'木 / 樹', 'ku':'果物 / 水果', 'ke':'消す / 消除', 'ko':'子 / 孩子',
+  'sa':'桜 / 櫻花', 'si':'白い / 白色', 'su':'巣 / 巢', 'se':'世界 / 世界', 'so':'空 / 天空',
+  'ta':'誕生日 / 生日', 'ti':'乳 / 乳汁', 'te':'手 / 手', 'to':'東京 / 東京',
+  'na':'夏 / 夏天', 'ni':'庭 / 花園', 'nu':'沼 / 沼澤', 'ne':'猫 / 貓', 'no':'残り / 剩餘',
+  'ha':'花 / 花', 'hi':'人 / 人', 'hu':'火 / 火', 'he':'屁 / 屁', 'ho':'星 / 星星',
+  'ma':'街 / 城市', 'mi':'耳 / 耳朵', 'mu':'六 / 六', 'me':'女 / 女人', 'mo':'桃 / 桃子',
+  'ya':'山 / 山', 'yu':'湯 / 熱水', 'yo':'夜 / 夜晚',
+  'ra':'拉麵 / 拉麵', 'ri':'梨 / 梨子', 'ru':'留守 / 看家', 're':'例会 / 例會', 'ro':'路上 / 路上',
+  'wa':'私 / 我', 'wo':'男 / 男人', 'ga':'銀杏 / 銀杏', 'gi':'義理 / 義氣', 'gu':'ぐち / 抱怨', 'ge':'下弦 / 下弦', 'go':'ご先祖 / 祖先',
+  'za':'自在 / 自在', 'zi':'痔 / 痔瘡', 'zu':'ずるい / 狡猾', 'ze':'善 / 善', 'zo':'像 / 象',
+  'da':'大地 / 大地', 'di':'大同 / 大同', 'du':'続ける / 繼續', 'de':'出發 / 出發', 'do':'どういたしまして / 不客氣',
+  'ba':'馬鹿 / 白癡', 'bi':'美 / 美', 'bu':'ぶらんこ / 鞦韆', 'be':'belle / 美女', 'bo':'坊主 / 和尚',
+  'pa':'parent / 父母', 'pi':'警察 / 警察', 'pu':'プリン / 布丁', 'pe':'ぺちゃんこ / 壓扁', 'po':'ぽんかん / 橘子',
+  'a':'あめ / 雨', 'i':'いぬ / 狗', 'u':'うみ / 海', 'e':'えき / 車站', 'o':'おちゃ / 茶',
+  'ya':'やさい / 蔬菜', 'yu':'ゆき / 雪', 'yo':'ようちえん / 幼兒園',
+  'wa':'わすれる / 忘記', 'wo':'おすすめ / 推薦', 'n':'にほん / 日本'
+};
+
+// ─── State ────────────────────────────────────────────────────
+let currentTab = 'hiragana';
+let learnedSet = new Set(JSON.parse(localStorage.getItem('kana_learned')||'[]'));
+let allCards = [];
+let currentCardIdx = 0;
+let currentModalKana = null;
+
+// ─── Init ─────────────────────────────────────────────────────
+function init(){
+  buildAllCards();
+  render();
+  updateProgress();
+}
+
+function buildAllCards(){
+  allCards = [];
+  // 母音
+  KANA.vowelsKana.forEach(v => {
+    allCards.push({h:v.ch, k:v.ks, r:v.rom, t:'vowel', ex:v.ex});
+  });
+  // 子音行
+  KANA.rows.forEach(row => {
+    if(row.isSound) return;
+    const len = row.rowLen || 5;
+    for(let i=0;i<len;i++){
+      if(row.rom[i]){
+        allCards.push({
+          h:row.ch[i],
+          k:row.ks[i],
+          r:row.rom[i],
+          t:'row',
+          ex: row.ex && row.ex[i] ? row.ex[i] : (EXAMPLES[row.rom[i]] || '')
+        });
+      }
+    }
+  });
+  // 特殊（やゆよ/を/ん）
+  KANA.specialRows.forEach(r => {
+    if(r.rom !== 'wa' || !allCards.find(c=>c.r==='wa')){
+      allCards.push({h:r.ch, k:r.ks, r:r.rom, t:'special', ex:r.ex||EXAMPLES[r.rom]||''});
+    }
+  });
+}
+
+function render(){
+  const main = document.getElementById('main');
+  let html = '';
+
+  // 母音行
+  html += `<div class="kana-row"><span class="row-tag">母音</span><div class="cards">`;
+  KANA.vowelsKana.forEach(v => {
+    html += cardHTML(v.ch, v.ks, v.rom, 'vowel', v.ex||EXAMPLES[v.rom]||'');
+  });
+  html += '</div></div>';
+
+  // 子音行
+  const rowNames = ['k','s','t','n','h','m','y','r','w'];
+  const rowLabels = ['か行','さ行','た行','な行','は行','ま行','や行','ら行','わ行'];
+  const displayRows = KANA.rows.filter(r => !r.isSound);
+  displayRows.forEach((row, idx) => {
+    const len = row.rowLen || 5;
+    html += `<div class="kana-row"><span class="row-tag">${rowLabels[idx]||row.kai}</span><div class="cards">`;
+    for(let i=0;i<len;i++){
+      if(row.rom[i]){
+        html += cardHTML(row.ch[i], row.ks[i], row.rom[i], 'row', row.ex&&row.ex[i]||EXAMPLES[row.rom[i]]||'');
+      } else {
+        html += `<div class="card empty"></div>`;
+      }
+    }
+    html += '</div></div>';
+  });
+
+  // 濁點 / 半濁點
+  html += `<div style="margin-top:16px"><div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px;padding-left:36px">◌濁點（が・ざ・だ・ば行）</div>`;
+  const soundRows = KANA.rows.filter(r=>r.isSound);
+  soundRows.forEach(row => {
+    html += `<div class="kana-row"><span class="row-tag">${row.kai}行</span><div class="cards">`;
+    for(let i=0;i<5;i++){
+      if(row.rom[i]) html += cardHTML(row.ch[i], row.ks[i], row.rom[i], 'sound', EXAMPLES[row.rom[i]]||'');
+      else html += `<div class="card empty"></div>`;
+    }
+    html += '</div></div>';
+  });
+  html += '</div>';
+
+  main.innerHTML = html;
+}
+
+function cardHTML(h, k, rom, type, ex){
+  const kana = currentTab==='katakana' ? k : h;
+  const other = currentTab==='katakana' ? h : k;
+  const showOther = currentTab==='both';
+  const learned = learnedSet.has(rom);
+  const cls = `card ${currentTab==='katakana'?'katakana':(type==='sound'?'dakuten':'hiragana')}`;
+  const mark = learned ? '✓' : '';
+  return `<div class="${cls}" onclick="openModal('${h}','${k}','${rom}','${ex}')">
+    <span class="big">${kana}</span>
+    ${showOther ? `<span class="small">${other}</span>` : ''}
+    <span class="romaji">${rom}</span>
+    <span class="play">🔊</span>
+    ${mark ? `<span style="position:absolute;top:3px;right:5px;font-size:9px;color:var(--accent)">${mark}</span>` : ''}
+  </div>`;
+}
+
+function openModal(h, k, rom, ex){
+  currentModalKana = {h, k, rom, ex};
+  document.getElementById('mHira').textContent = h;
+  document.getElementById('mKana').textContent = k;
+  document.getElementById('mRoma').textContent = rom;
+  if(ex){
+    document.getElementById('mExWord').textContent = ex.split(' / ')[0] || ex;
+    document.getElementById('mExTrans').textContent = ex.includes('/') ? ex.split(' / ')[1] : '';
+  } else {
+    document.getElementById('mExWord').textContent = '';
+    document.getElementById('mExTrans').textContent = '';
+  }
+  document.getElementById('modalBg').classList.add('show');
+  speakKana(rom, currentTab==='katakana' ? 'katakana' : 'hiragana');
+}
+
+function closeModal(){
+  document.getElementById('modalBg').classList.remove('show');
+  currentModalKana = null;
+}
+
+function speakKana(rom, type){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const voices = window.speechSynthesis.getVoices();
+  const ja = voices.find(v=>v.lang.startsWith('ja')) || voices[0];
+  const u = new SpeechSynthesisUtterance(rom);
+  u.lang = ja ? ja.lang : 'ja-JP';
+  u.voice = ja;
+  u.rate = 0.7;
+  window.speechSynthesis.speak(u);
+}
+
+function speakModal(){
+  if(!currentModalKana) return;
+  const type = document.getElementById('tabKana').classList.contains('active') ? 'katakana' : 'hiragana';
+  speakKana(currentModalKana.rom, type);
+}
+
+function nextCard(){
+  if(!currentModalKana) return;
+  // 標記為看過
+  learnedSet.add(currentModalKana.rom);
+  localStorage.setItem('kana_learned', JSON.stringify([...learnedSet]));
+  updateProgress();
+  closeModal();
+  // 重繪
+  render();
+}
+
+function switchTab(tab){
+  currentTab = tab;
+  ['tabHira','tabKana','tabBoth'].forEach(id=>{
+    document.getElementById(id).classList.remove('active');
+  });
+  document.getElementById('tab'+tab.charAt(0).toUpperCase()+tab.slice(1,3)).classList.add('active');
+  if(tab==='hiragana') document.getElementById('tabHira').classList.add('active');
+  else if(tab==='katakana') document.getElementById('tabKana').classList.add('active');
+  else document.getElementById('tabBoth').classList.add('active');
+  render();
+}
+
+function updateProgress(){
+  const total = allCards.length;
+  const pct = Math.round((learnedSet.size / total) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+// 讓語音在第一次互動後能正常工作
+window.speechSynthesis?.getVoices();
+window.addEventListener('load', () => {
+  setTimeout(()=>window.speechSynthesis?.getVoices(), 100);
+});
+
+init();
+</script>
+</body>
+</html>
