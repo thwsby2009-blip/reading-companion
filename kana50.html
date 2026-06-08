@@ -113,7 +113,7 @@ header h1{
 /* ── Card ── */
 .card{
   width:64px;
-  height:76px;
+  height:82px;
   background:var(--card);
   border:1px solid var(--border);
   border-radius:12px;
@@ -127,6 +127,7 @@ header h1{
   position:relative;
   overflow:hidden;
   user-select:none;
+  padding:4px 2px;
 }
 .card:hover{
   transform:translateY(-3px);
@@ -156,6 +157,16 @@ header h1{
   color:var(--text2);
   font-weight:500;
   margin-top:2px;
+}
+.card .meaning{
+  font-size:9px;
+  color:var(--accent);
+  font-weight:500;
+  margin-top:1px;
+  max-width:58px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 .card .play{
   position:absolute;
@@ -449,7 +460,7 @@ function render(){
       if(row.rom[i]){
         html += cardHTML(row.ch[i], row.ks[i], row.rom[i], 'row', EXAMPLES[row.rom[i]] || '');
       } else {
-        html += `<div class="card empty" style="width:64px;height:76px"></div>`;
+        html += `<div class="card empty" style="width:64px;height:82px"></div>`;
       }
     }
     html += '</div></div>';
@@ -462,7 +473,7 @@ function render(){
     html += `<div class="kana-row"><span class="row-tag">${row.kai}行</span><div class="cards">`;
     for(let i=0;i<5;i++){
       if(row.rom[i]) html += cardHTML(row.ch[i], row.ks[i], row.rom[i], 'sound', EXAMPLES[row.rom[i]]||'');
-      else html += `<div class="card empty" style="width:64px;height:76px"></div>`;
+      else html += `<div class="card empty" style="width:64px;height:82px"></div>`;
     }
     html += '</div></div>';
   });
@@ -478,10 +489,13 @@ function cardHTML(h, k, rom, type, ex){
   const learned = learnedSet.has(rom);
   const cls = `card ${currentTab==='katakana'?'katakana':(type==='sound'?'dakuten':'hiragana')}`;
   const mark = learned ? '✓' : '';
+  const meaning = ex ? (Array.isArray(ex) ? ex[0] : (typeof ex === 'string' ? ex.split(' / ')[0] : '')) : '';
+  const meaningHtml = meaning ? `<span class="meaning">${meaning}</span>` : '';
   return `<div class="${cls}" onclick="openModal('${h}','${k}','${rom}','${ex}')">
     <span class="big">${kana}</span>
     ${showOther ? `<span class="small">${other}</span>` : ''}
     <span class="romaji">${rom}</span>
+    ${meaningHtml}
     <span class="play">🔊</span>
     ${mark ? `<span style="position:absolute;top:3px;right:5px;font-size:9px;color:var(--accent)">${mark}</span>` : ''}
   </div>`;
