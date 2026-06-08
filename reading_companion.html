@@ -103,10 +103,22 @@ header h1{
   font-size:1.25rem;
 }
 .article-body.english{
-  font-family:'EB Garamond',Georgia,serif;
+  font-family:'EB Garamond','Georgia',serif;
   font-size:1.3rem;
   line-height:2.3;
 }
+.article-trans{
+  margin-top:14px;
+  padding:12px 16px;
+  background:rgba(0,0,0,.03);
+  border-left:3px solid var(--gold);
+  border-radius:0 6px 6px 0;
+  font-size:.9rem;
+  color:var(--ink-2);
+  line-height:1.7;
+  display:none;
+}
+.article-trans.show{display:block}
 .word{
   cursor:pointer;
   border-radius:2px;
@@ -343,6 +355,7 @@ header h1{
   <div class="article-wrap" id="awrap">
     <h2 class="article-title" id="atitle"></h2>
     <div class="article-body japanese" id="abody"></div>
+    <div class="article-trans" id="atrans"></div>
   </div>
 
   <aside class="sidebar">
@@ -618,6 +631,16 @@ function loadArticle(i) {
       showWord(w, el);
     });
   });
+
+  // 顯示中文翻譯
+  const transEl = document.getElementById('atrans');
+  if (a.trans) {
+    transEl.textContent = a.trans;
+    transEl.classList.add('show');
+  } else {
+    transEl.textContent = '';
+    transEl.classList.remove('show');
+  }
 }
 
 function showWord(w, el) {
