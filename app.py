@@ -10,19 +10,29 @@ PAGES = {
   "🔤 50音學習卡": "kana50.html",
 }
 
-default_idx = 0
-query = st.experimental_get_query_params()
-if "page" in query and query["page"][0] in PAGES:
-  default_idx = list(PAGES.keys()).index(query["page"][0]) if query["page"][0] in PAGES else 0
+# 嘗試取得目前頁面
+try:
+    query = st.query_params
+    page_key = query.get("page", "📖 互動閱讀器")
+    if page_key not in PAGES:
+        page_key = "📖 互動閱讀器"
+except Exception:
+    page_key = "📖 互動閱讀器"
 
-page = st.sidebar.selectbox("功能", list(PAGES.keys()), index=default_idx)
+page = st.sidebar.selectbox("功能", list(PAGES.keys()), index=list(PAGES.keys()).index(page_key))
+
+# 記住用戶選擇
+try:
+    st.query_params["page"] = page
+except Exception:
+    pass
 
 html_file = PAGES[page]
 html_path = html_dir / html_file
 
 if html_path.exists():
-  with open(html_path, "r", encoding="utf-8") as f:
-    html_content = f.read()
-  st.components.v1.html(html_content, height=800, scrolling=True)
+    with open(html_path, "r", encoding="utf-8") as f:
+        html_content = f.read()
+    st.components.v1.html(html_content, height=800, scrolling=True)
 else:
-  st.error(f"找不到 {html_file}，請確認檔案存在。")
+    st.error(f"找不到 {html_file}")
