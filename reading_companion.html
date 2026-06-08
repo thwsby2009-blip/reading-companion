@@ -4,126 +4,373 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>互動閱讀器</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#f5f2eb;--text:#2a2a2a;--accent:#c4a35a;
-  --hover:#e8e4d9;--sel:#fff8dc;--sidebar:#faf8f3;
-  --border:#e0d8c8;--muted:#888;--green:#5a8a5a;--yellow:#a89050
+  --paper:#f7f3ec;
+  --ink:#1c1917;
+  --ink-2:#57534e;
+  --ink-3:#a8a29e;
+  --rule:#e2ddd4;
+  --gold:#b45309;
+  --gold-bg:#fef3c7;
+  --side:#f0ebe3;
+  --mono:#f5f0e8;
 }
-html,body{height:100%}
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;height:100vh;overflow:hidden}
-::-webkit-selection{background:rgba(196,163,90,.25)}
+html{font-size:16px}
+body{
+  font-family:'Inter',system-ui,sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+}
 
-/* header */
-header{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--sidebar);flex-shrink:0;gap:8px;flex-wrap:wrap}
-header select,header button{font-family:inherit;font-size:13px;padding:5px 10px;border:1px solid var(--border);border-radius:5px;background:#fff;cursor:pointer;color:var(--text)}
-header select:hover,header button:hover{background:var(--hover)}
-header h1{font-size:16px;font-weight:600;color:var(--text);margin:0 auto}
-header h1 span{color:var(--accent)}
-.btn-speak{font-size:18px;background:none!important;border:none!important;padding:4px 8px;cursor:pointer;opacity:.7}
-.btn-speak:hover{opacity:1}
-.btn-speak.active{color:var(--accent);opacity:1}
+/* ── Header ── */
+header{
+  display:flex;
+  align-items:center;
+  padding:0 28px;
+  height:56px;
+  border-bottom:1px solid var(--rule);
+  background:var(--mono);
+  flex-shrink:0;
+  gap:16px;
+}
+header select{
+  font-family:'Inter',system-ui,sans-serif;
+  font-size:13px;
+  padding:5px 10px;
+  border:1px solid var(--rule);
+  border-radius:6px;
+  background:#fff;
+  color:var(--ink);
+  cursor:pointer;
+}
+header select:hover{border-color:var(--ink-3)}
+.speak-btn{
+  font-size:17px;
+  background:none;
+  border:none;
+  cursor:pointer;
+  opacity:.5;
+  padding:4px 8px;
+  border-radius:6px;
+  transition:opacity .2s,background .2s;
+}
+.speak-btn:hover{opacity:1;background:var(--rule)}
+.speak-btn.active{opacity:1;color:var(--gold)}
+header h1{
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--ink-2);
+  margin:0 auto;
+}
 
-/* main layout */
-.main{display:flex;flex:1;overflow:hidden}
-.article-wrap{flex:1;overflow-y:auto;padding:40px 60px}
-.vocab{width:260px;flex-shrink:0;border-left:1px solid var(--border);background:var(--sidebar);display:flex;flex-direction:column;overflow:hidden}
-.vocab h2{font-size:14px;font-weight:600;padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:6px;flex-shrink:0}
-.vocab h2 .cnt{background:var(--accent);color:#fff;border-radius:10px;padding:1px 7px;font-size:11px}
-.vocab-list{flex:1;overflow-y:auto;padding:8px}
-.vocab-item{display:flex;align-items:center;padding:8px 10px;border-radius:6px;cursor:default;font-size:13px;margin-bottom:4px}
-.vocab-item:hover{background:var(--hover)}
-.vocab-item .word{font-weight:600;margin-right:6px}
-.vocab-item .trans{color:var(--muted);font-size:12px}
-.vocab-item .del{opacity:0;margin-left:auto;font-size:11px;color:var(--muted);cursor:pointer;padding:2px 6px;border-radius:3px}
-.vocab-item:hover .del{opacity:1}
-.vocab-item .del:hover{background:#fcc;color}
-.vocab-item.known .dot{color:var(--green)}
-.vocab-item.learning .dot{color:var(--yellow)}
-.vocab-item .dot{margin-right:5px}
-.vocab-footer{padding:12px 16px;border-top:1px solid var(--border)}
-.vocab-footer button{width:100%;font-size:12px;padding:6px;color:var(--muted);border:1px solid var(--border);border-radius:4px;background:#fff;cursor:pointer}
-.vocab-footer button:hover{background:#fcc}
+/* ── Layout ── */
+.main{
+  display:flex;
+  flex:1;
+  overflow:hidden;
+}
 
-/* article text */
-.article-title{font-size:22px;font-weight:700;margin-bottom:20px;color:var(--text)}
-.article-body{font-size:18px;line-height:2.1;max-width:680px}
-.article-body.japanese{font-family:'Noto Serif JP','Hiragino Mincho Pro',serif}
-.article-body.english{font-family:'EB Garamond',Georgia,serif;font-size:19px}
-.w{ cursor:pointer;padding:1px 0;border-radius:3px;transition:background .1s }
-.w:hover{background:var(--hover)}
-.w.checked{background:var(--sel)}
+/* ── Article ── */
+.article-wrap{
+  flex:1;
+  overflow-y:auto;
+  padding:60px 80px;
+}
+.article-title{
+  font-size:1.5rem;
+  font-weight:600;
+  color:var(--ink);
+  margin-bottom:32px;
+  letter-spacing:.01em;
+}
+.article-body{
+  font-size:1.2rem;
+  line-height:2.2;
+  max-width:680px;
+  color:var(--ink);
+}
+.article-body.japanese{
+  font-family:'Noto Serif JP',serif;
+  font-size:1.25rem;
+}
+.article-body.english{
+  font-family:'EB Garamond',Georgia,serif;
+  font-size:1.3rem;
+  line-height:2.3;
+}
+.word{
+  cursor:pointer;
+  border-radius:2px;
+  padding:1px 3px;
+  margin:-1px -3px;
+  transition:background .15s;
+  display:inline;
+}
+.word:hover{background:var(--gold-bg);color:var(--gold)}
+.word.done{background:#fef9ee}
 
-/* popup */
-.popup{position:absolute;z-index:100;background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 16px;min-width:200px;max-width:260px;
-  box-shadow:0 4px 20px rgba(0,0,0,.12);opacity:0;transition:opacity .15s;pointer-events:none}
+/* ── Sidebar ── */
+.sidebar{
+  width:272px;
+  flex-shrink:0;
+  background:var(--side);
+  border-left:1px solid var(--rule);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.sidebar-head{
+  padding:20px 20px 16px;
+  border-bottom:1px solid var(--rule);
+}
+.sidebar-head h2{
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--ink-3);
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.sidebar-head h2 span{
+  background:var(--gold);
+  color:#fff;
+  border-radius:10px;
+  padding:1px 7px;
+  font-size:11px;
+}
+.vocab-list{
+  flex:1;
+  overflow-y:auto;
+  padding:10px 14px;
+}
+.vocab-empty{
+  text-align:center;
+  padding:40px 0;
+  color:var(--ink-3);
+  font-size:.85rem;
+  font-style:italic;
+}
+.vocab-item{
+  display:flex;
+  align-items:center;
+  padding:8px 10px;
+  border-radius:6px;
+  font-size:.85rem;
+  cursor:pointer;
+  transition:background .15s;
+  gap:6px;
+  position:relative;
+}
+.vocab-item:hover{background:var(--rule)}
+.vocab-item .dot{
+  font-size:10px;
+  flex-shrink:0;
+}
+.vocab-item .dot.known{color:#65a30d}
+.vocab-item .dot.learning{color:#d97706}
+.vocab-item .wv{
+  font-weight:600;
+  color:var(--ink);
+  flex-shrink:0;
+}
+.vocab-item .wt{
+  color:var(--ink-2);
+  font-size:.8rem;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.vocab-item .wvdel{
+  margin-left:auto;
+  opacity:0;
+  color:var(--ink-3);
+  font-size:.75rem;
+  padding:2px 5px;
+  border-radius:3px;
+  transition:opacity .15s;
+}
+.vocab-item:hover .wvdel{opacity:1}
+.vocab-item .wvdel:hover{background:#fecaca;color:#dc2626}
+
+.sidebar-foot{
+  padding:12px 14px;
+  border-top:1px solid var(--rule);
+}
+.sidebar-foot button{
+  width:100%;
+  font-size:.8rem;
+  color:var(--ink-3);
+  background:none;
+  border:1px solid var(--rule);
+  border-radius:5px;
+  padding:5px;
+  cursor:pointer;
+  font-family:inherit;
+  transition:background .15s;
+}
+.sidebar-foot button:hover{background:#fecaca;color:#dc2626;border-color:#fecaca}
+.sidebar-stats{
+  padding:8px 14px;
+  font-size:.75rem;
+  color:var(--ink-3);
+  display:flex;
+  gap:12px;
+}
+
+/* ── Popup ── */
+.popup{
+  position:absolute;
+  z-index:200;
+  background:#fff;
+  border:1px solid var(--rule);
+  border-radius:10px;
+  padding:16px 18px;
+  width:230px;
+  box-shadow:0 8px 32px rgba(0,0,0,.1),0 2px 8px rgba(0,0,0,.06);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .18s ease;
+}
 .popup.show{opacity:1;pointer-events:auto}
-.popup-word{font-size:18px;font-weight:700;margin-bottom:2px}
-.popup-reading{font-size:12px;color:var(--muted);margin-bottom:6px}
-.popup-pos{font-size:11px;color:#fff;background:var(--accent);border-radius:3px;padding:1px 6px;margin-left:6px}
-.popup-trans{font-size:15px;margin-bottom:8px}
-.popup-example{font-size:13px;color:var(--muted);font-style:italic;border-top:1px solid var(--border);padding-top:8px;margin-top:4px}
-.popup-btns{display:flex;gap:6px;margin-top:10px}
-.popup-btns button{flex:1;font-size:12px;padding:5px;border:1px solid var(--border);border-radius:4px;cursor:pointer;font-family:inherit}
-.popup-btns .know{background:#e8f4e8;color:var(--green)}
-.popup-btns .again{background:#f8f0d8;color:var(--yellow)}
-
-/* stats bar */
-.stats{padding:8px 16px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);display:flex;gap:16px}
-
-/* mobile */
-@media(max-width:700px){
-  .main{flex-direction:column}
-  .article-wrap{padding:24px 20px;flex:none}
-  .vocab{width:100%;height:200px;border-left:none;border-top:1px solid var(--border)}
-  .vocab-list{display:flex;flex-wrap:wrap;gap:4px}
-  .vocab-item{margin:0;font-size:12px;padding:4px 8px;background:#fff}
-  .vocab-item .trans,.vocab-item .del,.vocab-item .dot{display:none}
+.pw-word{
+  font-size:1.15rem;
+  font-weight:600;
+  color:var(--ink);
+  margin-bottom:2px;
+  font-family:'Noto Serif JP',serif;
 }
+.pw-reading{
+  font-size:.75rem;
+  color:var(--ink-3);
+  margin-bottom:6px;
+  letter-spacing:.04em;
+}
+.pw-pos{
+  display:inline-block;
+  font-size:.7rem;
+  background:var(--mono);
+  color:var(--ink-2);
+  border-radius:3px;
+  padding:1px 6px;
+  margin-bottom:8px;
+}
+.pw-trans{
+  font-size:1rem;
+  color:var(--ink);
+  margin-bottom:6px;
+  font-weight:500;
+}
+.pw-example{
+  font-size:.8rem;
+  color:var(--ink-2);
+  font-style:italic;
+  border-top:1px solid var(--rule);
+  padding-top:8px;
+  margin-top:4px;
+  line-height:1.6;
+}
+.pw-btns{
+  display:flex;
+  gap:6px;
+  margin-top:12px;
+}
+.pw-btns button{
+  flex:1;
+  font-size:.78rem;
+  padding:5px 4px;
+  border-radius:5px;
+  cursor:pointer;
+  font-family:inherit;
+  transition:filter .15s;
+  border:1px solid var(--rule);
+}
+.pw-btns button:hover{filter:brightness(.93)}
+.pw-btns .know-btn{background:#f0fdf4;color:#15803d}
+.pw-btns .again-btn{background:#fef9ee;color:#92400e}
+.pw-btns .speak-btn-sm{background:#f5f0e8;color:var(--ink-2);flex:0 0 32px}
+
+/* ── Responsive ── */
+@media(max-width:700px){
+  .article-wrap{padding:30px 22px}
+  .sidebar{width:100%;height:220px;border-left:none;border-top:1px solid var(--rule)}
+  .main{flex-direction:column}
+  .vocab-list{display:flex;flex-wrap:wrap;gap:4px}
+  .vocab-item{margin:0;font-size:.8rem;padding:4px 8px;background:#fff}
+  .vocab-item .wt,.vocab-item .wvdel,.vocab-empty{display:none}
+}
+
+/* ── Scrollbar ── */
+.vocab-list::-webkit-scrollbar{width:4px}
+.vocab-list::-webkit-scrollbar-track{background:transparent}
+.vocab-list::-webkit-scrollbar-thumb{background:var(--rule);border-radius:2px}
+.article-wrap::-webkit-scrollbar{width:5px}
+.article-wrap::-webkit-scrollbar-track{background:transparent}
+.article-wrap::-webkit-scrollbar-thumb{background:var(--rule);border-radius:3px}
 </style>
 </head>
 <body>
+
 <header>
-  <select id="sel"><option value="0">東京的一天（日文）</option><option value="1">日本的四季（日文）</option><option value="2">A Day in My Life（英文）</option></select>
-  <button class="btn-speak" id="btnSpeakAll" title="朗讀全文">🔊</button>
-  <h1>互動<span>閱讀</span>器</h1>
+  <select id="sel">
+    <option value="0">東京的一天 · 日文</option>
+    <option value="1">日本的四季 · 日文</option>
+    <option value="2">A Day in My Life · 英文</option>
+  </select>
+  <button class="speak-btn" id="btnSpeakAll" title="朗讀全文">🔊</button>
+  <h1>互動閱讀器</h1>
 </header>
+
 <div class="main">
-  <div class="article-wrap" id="articleWrap">
-    <div class="article-title" id="articleTitle"></div>
-    <div class="article-body japanese" id="articleBody"></div>
+  <div class="article-wrap" id="awrap">
+    <h2 class="article-title" id="atitle"></h2>
+    <div class="article-body japanese" id="abody"></div>
   </div>
-  <div class="vocab">
-    <h2>📝 單字本 <span class="cnt" id="vocabCount">0</span></h2>
-    <div class="vocab-list" id="vocabList"></div>
-    <div class="vocab-footer"><button onclick="clearVocab()">清除全部</button></div>
-    <div class="stats" id="stats"></div>
-  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <h2>📝 單字本 <span id="vcnt">0</span></h2>
+    </div>
+    <div class="vocab-list" id="vlist"></div>
+    <div class="sidebar-stats" id="vstats"></div>
+    <div class="sidebar-foot">
+      <button onclick="clearVocab()">清除全部單字</button>
+    </div>
+  </aside>
 </div>
+
 <div class="popup" id="popup">
-  <div class="popup-word" id="pw"></div>
-  <div class="popup-reading" id="pr"></div>
-  <div id="ppos" style="display:inline-block;margin-bottom:6px"></div>
-  <div class="popup-trans" id="pt"></div>
-  <div class="popup-example" id="pex"></div>
-  <div class="popup-btns">
-    <button class="again" onclick="markWord('learning')">🔄 再記</button>
-    <button class="know" onclick="markWord('known')">✅ 記住了</button>
-    <button class="again" id="btnSpeakWord" onclick="speakWord()" title="聽發音">🔊</button>
+  <div class="pw-word" id="pw-word"></div>
+  <div class="pw-reading" id="pw-reading"></div>
+  <div id="pw-pos"></div>
+  <div class="pw-trans" id="pw-trans"></div>
+  <div class="pw-example" id="pw-ex"></div>
+  <div class="pw-btns">
+    <button class="again-btn" onclick="markWord('learning')">🔄 再記</button>
+    <button class="know-btn" onclick="markWord('known')">✅ 記住了</button>
+    <button class="speak-btn-sm" onclick="speakWord()" title="聽發音">🔊</button>
   </div>
 </div>
 
 <script>
-// === 詞庫 ===
+// ─── Dictionary ───────────────────────────────────────────────
 const DICT = {
-  // 日文
   "ここ":{r:"ここ",p:"場所",t:"這裡",e:"ここは東京です。/ 這裡是東京。"},
-  "そこ":{r:"そこ",p:"場所",t:"那裡（較近）",e:""},
+  "そこ":{r:"そこ",p:"場所",t:"那裡（較近處）",e:""},
   "どこ":{r:"どこ",p:"場所",t:"哪裡",e:"どこに行きますか？/ 你要去哪裡？"},
   "私":{r:"わたし",p:"代名詞",t:"我",e:""},
   "僕":{r:"ぼく",p:"代名詞",t:"我（男性）",e:""},
-  "今日":{r:"きょう",p:"時間",t:"今天",e:""},
+  "今日":{r:"きょう",p:"時間",t:"今天",e:"今日は晴れです。/ 今天天氣晴。"},
   "明日":{r:"あした",p:"時間",t:"明天",e:""},
   "昨日":{r:"きのう",p:"時間",t:"昨天",e:""},
   "食べる":{r:"たべる",p:"動詞",t:"吃",e:"何を食べますか？/ 你要吃什麼？"},
@@ -131,12 +378,12 @@ const DICT = {
   "行く":{r:"いく",p:"動詞",t:"去",e:"学校に行きます。/ 去學校。"},
   "来る":{r:"くる",p:"動詞",t:"來",e:"友達が来ます。/ 朋友會來。"},
   "見る":{r:"みる",p:"動詞",t:"看",e:"映画を見ます。/ 看電影。"},
-  "聞く":{r:"きく",p:"動詞",t:"聽/問",e:"音楽を聞きます。/ 聽音樂。"},
+  "聞く":{r:"きく",p:"動詞",t:"聽 / 問",e:"音楽を聞きます。/ 聽音樂。"},
   "話す":{r:"はなす",p:"動詞",t:"說",e:"日本語を話します。/ 說日文。"},
   "書く":{r:"かく",p:"動詞",t:"寫",e:"手紙を書きます。/ 寫信。"},
   "読む":{r:"よむ",p:"動詞",t:"讀",e:"本を読みます。/ 讀書。"},
   "人":{r:"ひと",p:"名詞",t:"人",e:"人は多い。/ 人很多。"},
-  "街":{r:"まち",p:"名詞",t:"城市/街道",e:"街を歩きます。/ 走在街上。"},
+  "街":{r:"まち",p:"名詞",t:"城市 / 街道",e:"街を歩きます。/ 走在街上。"},
   "山":{r:"やま",p:"名詞",t:"山",e:"山に登ります。/ 登山。"},
   "海":{r:"うみ",p:"名詞",t:"海",e:"海に行きます。/ 去海邊。"},
   "川":{r:"かわ",p:"名詞",t:"河川",e:"川で泳ぎます。/ 在河裡游泳。"},
@@ -146,10 +393,9 @@ const DICT = {
   "大きい":{r:"おおきい",p:"形容詞",t:"大的",e:"大きい犬ですね。/ 是隻大狗呢。"},
   "小さい":{r:"ちいさい",p:"形容詞",t:"小的",e:"小さい猫です。/ 是隻小貓。"},
   "新しい":{r:"あたらしい",p:"形容詞",t:"新的",e:"新しい車を買いました。/ 買了新车。"},
-  "古い":{r:"ふるい",p:"形容詞",t:"舊的/老的",e:"古い家です。/ 是間老房子。"},
+  "古い":{r:"ふるい",p:"形容詞",t:"舊的 / 老的",e:"古い家です。/ 是間老房子。"},
   "良い":{r:"よい",p:"形容詞",t:"好的",e:"今日は天気が良い。/ 今天天氣好。"},
   "悪い":{r:"わるい",p:"形容詞",t:"不好的",e:"気分が悪い。/ 不舒服。"},
-  "天気が":{r:"てんきが",p:"片語",t:"天氣",e:"天気が也很好です。/ 天氣也很好。"},
   "とても":{r:"とても",p:"副詞",t:"非常",e:"とても面白いです。/ 非常有趣。"},
   "少し":{r:"すこし",p:"副詞",t:"一點點",e:"少し疲れました。/ 有點累了。"},
   "東京":{r:"とうきょう",p:"地名",t:"東京",e:""},
@@ -176,13 +422,12 @@ const DICT = {
   "好き":{r:"すき",p:"形容動詞",t:"喜歡",e:"海が好きです。/ 喜歡海。"},
   "嫌い":{r:"きらい",p:"形容動詞",t:"討厭",e:"嫌いじゃないです。/ 不討厭。"},
   "有名":{r:"ゆうめい",p:"形容動詞",t:"有名",e:"富士山は有名ですね。/ 富士山很有名。"},
-  "一杯":{r:"いっぱい",p:"副詞",t:"充滿/一杯",e:"咖啡を一杯飲みます。/ 喝一杯咖啡。"},
+  "一杯":{r:"いっぱい",p:"副詞",t:"充滿 / 一杯",e:"咖啡を一杯飲みます。/ 喝一杯咖啡。"},
   "待って":{r:"まって",p:"動詞",t:"等待",e:"ちょっと待って。/ 等一下。"},
   "始めて":{r:"はじめて",p:"副詞",t:"第一次",e:"始めての旅行。/ 第一次旅行。"},
   "楽しい":{r:"たのしい",p:"形容詞",t:"快樂的",e:"楽しい一日でした。/ 是快樂的一天。"},
-  "早い":{r:"はやい",p:"形容詞",t:"快的/早的",e:"早く帰ります。/ 早點回家。"},
-  "遅い":{r:"おそい",p:"形容詞",t:"慢的/遲的",e:"遅刻しました。/ 遲到了。"},
-  "今日":{r:"きょう",p:"時間",t:"今天",e:"今日は晴れです。/ 今天晴天。"},
+  "早い":{r:"はやい",p:"形容詞",t:"快的 / 早的",e:"早く帰ります。/ 早點回家。"},
+  "遅い":{r:"おそい",p:"形容詞",t:"慢的 / 遲的",e:"遅刻しました。/ 遲到了。"},
   "晴れ":{r:"はれ",p:"名詞",t:"晴天",e:"今日は晴れです。/ 今天晴天。"},
   "雨":{r:"あめ",p:"名詞",t:"雨",e:"雨が降っています。/ 在下雨。"},
   "雪":{r:"ゆき",p:"名詞",t:"雪",e:"雪が降りました。/ 下雪了。"},
@@ -194,15 +439,22 @@ const DICT = {
   "湿度":{r:"しつど",p:"名詞",t:"濕度",e:"湿度が高いです。/ 濕度很高。"},
   "涼しい":{r:"すずしい",p:"形容詞",t:"涼爽的",e:"秋は涼しいです。/ 秋天涼爽。"},
   "過ごし":{r:"すごし",p:"動詞",t:"度過",e:"如何過ごしましたか？/ 怎麼度過的？"},
-  "おASIC":{r:"おASIC",p:"名詞",t:"ASIC",e:"ASICを設計します。/ 設計ASIC。"},
-  "設計":{r:"せっけい",p:"名詞/動詞",t:"設計",e:"回路を設計します。/ 設計電路。"},
-  "回路":{r:"かいろ",p:"名詞",t:"電路",e:"集積回路を作ります。/ 製作積體電路。"},
   "会社":{r:"かいしゃ",p:"名詞",t:"公司",e:"会社で働きます。/ 在公司工作。"},
-  "IC":{r:"アイシー",p:"名詞",t:"IC/積體電路",e:"ICを設計します。/ 設計IC。"},
-
+  "日本":{r:"にほん",p:"名詞",t:"日本",e:"日本语を勉强します。/ 學日文。"},
+  "文章":{r:"ぶんしょう",p:"名詞",t:"文章",e:"文章を読みます。/ 讀文章。"},
+  "咖啡":{r:"コーヒー",p:"名詞",t:"咖啡",e:"咖啡を飲みます。/ 喝咖啡。"},
+  "通勤":{r:"つうきん",p:"名詞/動詞",t:"通勤",e:"通勤電車に乗ります。/ 搭通勤電車。"},
+  "食堂":{r:"しょくどう",p:"名詞",t:"食堂 / 餐廳",e:"食堂で食べます。/ 在食堂吃。"},
+  "温泉":{r:"おんせん",p:"名詞",t:"溫泉",e:"温泉に入ります。/ 泡溫泉。"},
+  "地域":{r:"ちいき",p:"名詞",t:"地區",e:"この地域は静かです。/ 這個地區很安靜。"},
+  "散歩":{r:"さんぽ",p:"名詞/動詞",t:"散步",e:"散歩に行きます。/ 去散步。"},
+  "同時":{r:"どうじ",p:"名詞",t:"同時",e:""},
+  "同 事":{r:"どうじ",p:"名詞",t:"同事",e:"同事と食事します。/ 和同事吃飯。"},
+  "日":{r:"にち",p:"時間",t:"日/天",e:"一日は長い。/ 一天很長。"},
+  "普通":{r:"ふつう",p:"形容動詞",t:"普通",e:"普通の生活です。/ 普通的生活。"},
+  "日常":{r:"にちじょう",p:"名詞",t:"日常",e:"日常の暮らし。/ 日常的生活。"},
   // 英文
-  "live":{p:"verb",t:"居住",e:"I live in Tokyo."},
-  "day":{p:"noun",t:"一天",e:"It was a long day."},
+  "I":{p:"代詞",t:"我",e:"I live in Tokyo."},
   "wake":{p:"verb",t:"醒來",e:"I wake up at 6."},
   "morning":{p:"noun",t:"早上",e:"Good morning!"},
   "coffee":{p:"noun",t:"咖啡",e:"I drink coffee every morning."},
@@ -239,57 +491,32 @@ const DICT = {
   "store":{p:"noun",t:"店",e:"The store is open."},
   "food":{p:"noun",t:"食物",e:"The food is delicious."},
   "water":{p:"noun",t:"水",e:"Drink more water."},
-  "money":{p:"noun",t:"錢",e:"I need money."},
-  "phone":{p:"noun",t:"電話",e:"My phone is ringing."},
-  "computer":{p:"noun",t:"電腦",e:"I work on a computer."},
-  "house":{p:"noun",t:"房子",e:"This is my house."},
-  "room":{p:"noun",t:"房間",e:"Clean your room."},
-  "bed":{p:"noun",t:"床",e:"I go to bed at 10."},
-  "night":{p:"noun",t:"晚上",e:"Good night!"},
-  "today":{p:"adverb/noun",t:"今天",e:"Today is Monday."},
-  "tomorrow":{p:"adverb/noun",t:"明天",e:"See you tomorrow."},
-  "yesterday":{p:"adverb/noun",t:"昨天",e:"Yesterday was Sunday."},
-  "always":{p:"adverb",t:"總是",e:"I always drink coffee."},
-  "never":{p:"adverb",t:"從不",e:"I never eat meat."},
-  "sometimes":{p:"adverb",t:"有時",e:"I sometimes walk to work."},
-  "often":{p:"adverb",t:"經常",e:"I often read at night."},
   "happy":{p:"adjective",t:"快樂",e:"I am happy today."},
   "tired":{p:"adjective",t:"累",e:"I am very tired."},
   "busy":{p:"adjective",t:"忙",e:"Today is busy."},
   "quiet":{p:"adjective",t:"安靜",e:"The street is quiet."},
   "crowded":{p:"adjective",t:"擁擠",e:"The train is crowded."},
   "delicious":{p:"adjective",t:"好吃",e:"The food is delicious."},
-  "interesting":{p:"adjective",t:"有趣",e:"The book is interesting."},
-  "boring":{p:"adjective",t:"無聊",e:"The movie is boring."},
-  "easy":{p:"adjective",t:"簡單",e:"This test is easy."},
-  "difficult":{p:"adjective",t:"困難",e:"Japanese is difficult."},
-  "good":{p:"adjective",t:"好",e:"This is good."},
-  "bad":{p:"adjective",t:"不好",e:"The weather is bad."},
-  "new":{p:"adjective",t:"新",e:"This is new."},
-  "old":{p:"adjective",t:"舊",e:"This house is old."},
-  "big":{p:"adjective",t:"大",e:"Tokyo is big."},
-  "small":{p:"adjective",t:"小",e:"This room is small."},
-  "hot":{p:"adjective",t:"熱",e:"The coffee is hot."},
-  "cold":{p:"adjective",t:"冷",e:"The water is cold."},
-  "fast":{p:"adjective/adverb",t:"快",e:"The train is fast."},
-  "slow":{p:"adjective/adverb",t:"慢",e:"The bus is slow."},
-  "near":{p:"prep/adjective",t:"近",e:"The station is near."},
-  "far":{p:"adjective/adverb",t:"遠",e:"The mountain is far."},
+  "always":{p:"adverb",t:"總是",e:"I always drink coffee."},
+  "never":{p:"adverb",t:"從不",e:"I never eat meat."},
+  "sometimes":{p:"adverb",t:"有時",e:"I sometimes walk to work."},
   "early":{p:"adjective/adverb",t:"早",e:"I wake up early."},
-  "late":{p:"adjective/adverb",t:"遲",e:"I am late."}
+  "late":{p:"adjective/adverb",t:"遲",e:"I am late."},
+  "six":{p:"number",t:"六",e:""},
+  "eleven":{p:"number",t:"十一",e:""}
 };
 
-// === 文章 ===
+// ─── Articles ─────────────────────────────────────────────────
 const ARTICLES = [
   {
     title:"東京的一天",
     lang:"japanese",
-    body:"朝、私は咖啡を一杯飲みます。そして駅に向かって歩き始めます。駅はいつも人々が多く、電車も込みます。でも、 사람들은皆静かにしています。私は通勤電車の中で、本を読みます。会社では、ICの回路設計の仕事をしています。昼ごはんは同事と食堂で食べます。有时、街の小さな店に参ります。咖啡を飲みながら、勉强をこともあります。夜、家に帰ると、少し休憩します。そして日本语の文章を読みます。今日も東京での普通の日常でした。"
+    body:"朝、私は咖啡を一杯飲みます。そして駅に向かって歩き始めます。駅はいつも人々が多く、電車も込みます。でも、 사람들은皆静かにしています。私は通勤電車の中で、本を読みます。会社では、ICの回路設計の仕事をしています。昼ごはんは同時と食堂で食べます。有时、街の小さな店に参ります。咖啡を飲みながら、勉强をこともあります。夜、家に帰ると、少し休憩します。そして日本语の文章を読みます。今日も東京での普通の日常でした。"
   },
   {
     title:"日本的四季",
-    lang:"japanese", 
-    body:"日本には美しい四季があります。春になると、桜が咲き、多くの人々が花見をします。公園や川沿いの道は花色で 가득になります。夏は暑くて湿度が高いです。海や山に遊びに行く人々が多いです。秋になると、街の公園や山々の紅葉が赤や黄色に染まります。涼しい風が吹き、散步にとても良い季節です。冬は雪が降る地域もあります。寒いですが、温泉に入るととても気持ちがよいです。どの季節もそれぞれの美しさがあります。"
+    lang:"japanese",
+    body:"日本には美しい四季があります。春になると、桜が咲き、多くの人々が花見をします。公園や川沿いの道は花色で 가득になります。夏は暑くて湿度が高いです。海や山に遊びに行く人々が多いです。秋になると、街の公園や山々の紅葉が赤や黄色に染まります。涼しい風が吹き、散歩にとても良い季節です。冬は雪が降る地域もあります。寒いですが、温泉に入るととても気持ちがよいです。どの季節もそれぞれの美しさがあります。"
   },
   {
     title:"A Day in My Life",
@@ -298,203 +525,152 @@ const ARTICLES = [
   }
 ];
 
-// === 狀態 ===
-let currentArticle = 0;
-let vocab = JSON.parse(localStorage.getItem('langreader_vocab') || '{}');
-let currentWord = null;
-let popupX = 0, popupY = 0;
+// ─── State ────────────────────────────────────────────────────
+let cur = 0;
+let vocab = JSON.parse(localStorage.getItem('rc_vocab') || '{}');
+let curWord = null;
+let speaking = false;
+let utt = null;
 
-// === 初始化 ===
-function init(){
-  loadArticle(currentArticle);
+function init() {
+  loadArticle(cur);
   renderVocab();
-  document.getElementById('sel').value = currentArticle;
+  document.getElementById('sel').value = cur;
   document.getElementById('sel').onchange = e => { loadArticle(+e.target.value); };
   document.addEventListener('click', e => {
-    if(!e.target.closest('.w') && !e.target.closest('.popup')) hidePopup();
+    if (!e.target.closest('.word') && !e.target.closest('.popup')) hidePop();
   });
+  document.getElementById('btnSpeakAll').onclick = toggleSpeakAll;
 }
 
-function loadArticle(idx){
-  currentArticle = idx;
-  const a = ARTICLES[idx];
-  document.getElementById('articleTitle').textContent = a.title;
-  const body = document.getElementById('articleBody');
-  body.className = 'article-body ' + (a.lang === 'japanese' ? 'japanese' : 'english');
-  
-  let html = a.body;
-  if(a.lang === 'japanese'){
-    // wrap each word with click span
-    const words = a.body.replace(/[。、！？「」（）「」『』]/g, m => m + ' ');
-    const arr = [];
-    // split by spaces but keep punctuation
-    let tokens = a.body.split(/([。、！？「」（）「」『』\s])/);
-    html = tokens.map(t => {
-      if(/^[。、！？「」（）「」『』\s]+$/.test(t)) return t;
-      if(t.length > 1) return `<span class="w" data-w="${t}">${t}</span>`;
-      return t;
-    }).join('');
-  } else {
-    // English - split by words
-    html = a.body.split(/(\s+|[.,!?;:'"()-])/).map(t => {
-      if(/^[.,!?;:'"()-]+$/.test(t) || /^\s+$/.test(t)) return t;
-      if(t.length > 2) return `<span class="w" data-w="${t}">${t}</span>`;
-      return t;
-    }).join('');
-  }
-  
-  body.innerHTML = html;
-  
-  // bind click
-  body.querySelectorAll('.w').forEach(el => {
+function loadArticle(i) {
+  cur = i;
+  const a = ARTICLES[i];
+  document.getElementById('atitle').textContent = a.title;
+  const bd = document.getElementById('abody');
+  bd.className = 'article-body ' + (a.lang === 'japanese' ? 'japanese' : 'english');
+
+  const toks = a.body.split(/([。、！？「」（）『』\s,.!?;:'"()-]+)/);
+  bd.innerHTML = toks.map(t => {
+    if (/^[。、！？「」（）『』\s,.!?;:'"()-]+$/.test(t) || t === '') return t;
+    if (t.length > 1) return `<span class="word" data-w="${t.replace(/"/g,'"')}">${t}</span>`;
+    return t;
+  }).join('');
+
+  bd.querySelectorAll('.word').forEach(el => {
     el.addEventListener('click', e => {
       e.stopPropagation();
       const w = el.dataset.w;
+      if (vocab[w]) el.classList.add('done');
       showWord(w, el);
     });
   });
 }
 
-function showWord(w, el){
-  const info = DICT[w] || null;
-  currentWord = w;
-  
-  const popup = document.getElementById('popup');
-  const pw = document.getElementById('pw');
-  const pr = document.getElementById('pr');
-  const pt = document.getElementById('pt');
-  const ppos = document.getElementById('ppos');
-  const pex = document.getElementById('pex');
-  
-  pw.textContent = w;
-  if(info){
-    pr.textContent = info.r || '';
-    pt.textContent = info.t || '';
-    ppos.innerHTML = info.p ? `<span class="popup-pos">${info.p}</span>` : '';
-    pex.textContent = info.e || '';
-  } else {
-    pr.textContent = '';
-    pt.textContent = '（詞庫中沒有這個詞）';
-    ppos.innerHTML = '';
-    pex.textContent = '';
-  }
-  
+function showWord(w, el) {
+  curWord = w;
+  const info = DICT[w];
+  document.getElementById('pw-word').textContent = w;
+  document.getElementById('pw-reading').textContent = info ? (info.r || '') : '';
+  document.getElementById('pw-pos').innerHTML = info && info.p ? `<span class="pw-pos">${info.p}</span>` : '';
+  document.getElementById('pw-trans').textContent = info ? info.t : '（詞庫中找不到）';
+  document.getElementById('pw-ex').textContent = info && info.e ? info.e : '';
+
   // position
-  const rect = el.getBoundingClientRect();
-  const wrap = document.getElementById('articleWrap');
-  const wrapRect = wrap.getBoundingClientRect();
-  
-  let top = rect.bottom - wrapRect.top + 6;
-  let left = rect.left - wrapRect.left;
-  
-  // if too low, show above
-  if(top + 200 > wrap.clientHeight) top = rect.top - wrapRect.top - 200;
-  // if too right, shift left
-  if(left + 260 > wrap.clientWidth) left = wrap.clientWidth - 270;
-  
-  popup.style.top = top + 'px';
-  popup.style.left = left + 'px';
-  popup.classList.add('show');
-  
-  // check if already in vocab
-  if(vocab[w]){
-    const state = vocab[w].state;
-    document.querySelectorAll('.popup-btns button').forEach(b => b.style.opacity = '0.4');
-    if(state === 'known') document.querySelector('.popup-btns .know').style.opacity = '1';
-    else document.querySelector('.popup-btns .again').style.opacity = '1';
-  } else {
-    document.querySelectorAll('.popup-btns button').forEach(b => b.style.opacity = '1');
-  }
+  const pop = document.getElementById('popup');
+  const wrap = document.getElementById('awrap');
+  const rc = el.getBoundingClientRect();
+  const wc = wrap.getBoundingClientRect();
+  let top = rc.bottom - wc.top + 8;
+  let left = rc.left - wc.left;
+  if (top + 260 > wrap.clientHeight) top = rc.top - wc.top - 200;
+  if (left + 230 > wrap.clientWidth) left = wrap.clientWidth - 240;
+  pop.style.top = top + 'px';
+  pop.style.left = Math.max(8, left) + 'px';
+  pop.classList.add('show');
 }
 
-function hidePopup(){
+function hidePop() {
   document.getElementById('popup').classList.remove('show');
-  currentWord = null;
+  curWord = null;
 }
 
-function markWord(state){
-  if(!currentWord) return;
-  const info = DICT[currentWord];
-  vocab[currentWord] = { t: info ? info.t : '', state };
-  localStorage.setItem('langreader_vocab', JSON.stringify(vocab));
+function markWord(state) {
+  if (!curWord) return;
+  const info = DICT[curWord];
+  vocab[curWord] = { t: info ? info.t : '', state };
+  localStorage.setItem('rc_vocab', JSON.stringify(vocab));
   renderVocab();
-  hidePopup();
+  // mark in article
+  document.querySelectorAll(`.word[data-w="${curWord}"]`).forEach(el => el.classList.add('done'));
+  hidePop();
 }
 
-function renderVocab(){
-  const list = document.getElementById('vocabList');
-  const count = document.getElementById('vocabCount');
-  const stats = document.getElementById('stats');
-  
-  const words = Object.keys(vocab);
-  count.textContent = words.length;
-  
-  const known = words.filter(w => vocab[w].state === 'known').length;
-  const learning = words.length - known;
-  stats.innerHTML = `<span>記住 ${known}</span><span>再記 ${learning}</span>`;
-  
-  list.innerHTML = words.map(w => {
+function removeWord(w) {
+  delete vocab[w];
+  localStorage.setItem('rc_vocab', JSON.stringify(vocab));
+  renderVocab();
+}
+
+function renderVocab() {
+  const list = document.getElementById('vlist');
+  const cnt = document.getElementById('vcnt');
+  const stats = document.getElementById('vstats');
+  const ws = Object.keys(vocab);
+  cnt.textContent = ws.length;
+  const known = ws.filter(w => vocab[w].state === 'known').length;
+  stats.innerHTML = `<span>🟢 ${known}</span><span>🟡 ${ws.length - known}</span>`;
+  if (!ws.length) {
+    list.innerHTML = '<div class="vocab-empty">點擊文章中的單字<br>就會收進這裡</div>';
+    return;
+  }
+  list.innerHTML = ws.map(w => {
     const d = vocab[w];
     const dot = d.state === 'known' ? '🟢' : '🟡';
-    return `<div class="vocab-item ${d.state}" onclick="removeWord('${w.replace(/'/g,"\\'")}')">
-      <span class="dot">${dot}</span>
-      <span class="word">${w}</span>
-      <span class="trans">${d.t}</span>
-      <span class="del">✕</span>
+    return `<div class="vocab-item" onclick="removeWord('${w.replace(/'/g,"\\'")}')">
+      <span class="dot ${d.state}">${dot}</span>
+      <span class="wv">${w}</span>
+      <span class="wt">${d.t}</span>
+      <span class="wvdel">✕</span>
     </div>`;
   }).join('');
 }
 
-function removeWord(w){
-  delete vocab[w];
-  localStorage.setItem('langreader_vocab', JSON.stringify(vocab));
-  renderVocab();
-}
-
-function clearVocab(){
-  if(!confirm('確定清除所有單字？')) return;
+function clearVocab() {
+  if (!confirm('清除所有單字？')) return;
   vocab = {};
-  localStorage.setItem('langreader_vocab', JSON.stringify(vocab));
+  localStorage.setItem('rc_vocab', JSON.stringify(vocab));
   renderVocab();
+  document.querySelectorAll('.word.done').forEach(el => el.classList.remove('done'));
 }
 
-// === 語音朗讀 ===
-let currentUtterance = null;
-let isSpeakingAll = false;
-
-function speakWord(){
-  if(!currentWord || !window.speechSynthesis) return;
-  window.speechSynthesis.cancel();
-  const utt = new SpeechSynthesisUtterance(currentWord);
-  const lang = ARTICLES[currentArticle].lang;
-  utt.lang = lang === 'japanese' ? 'ja-JP' : 'en-US';
-  utt.rate = 0.8;
-  window.speechSynthesis.speak(utt);
-}
-
-function speakArticle(){
-  if(!window.speechSynthesis) return;
-  if(currentUtterance && window.speechSynthesis.speaking){
+function toggleSpeakAll() {
+  if (!window.speechSynthesis) return;
+  if (speaking) {
     window.speechSynthesis.cancel();
-    isSpeakingAll = false;
+    speaking = false;
     document.getElementById('btnSpeakAll').classList.remove('active');
     return;
   }
-  const a = ARTICLES[currentArticle];
-  const text = a.title + '。' + a.body;
-  currentUtterance = new SpeechSynthesisUtterance(text);
-  currentUtterance.lang = a.lang === 'japanese' ? 'ja-JP' : 'en-US';
-  currentUtterance.rate = 0.85;
-  currentUtterance.onend = () => {
-    isSpeakingAll = false;
-    document.getElementById('btnSpeakAll').classList.remove('active');
-  };
-  isSpeakingAll = true;
+  const a = ARTICLES[cur];
+  const text = a.title + '. ' + a.body;
+  utt = new SpeechSynthesisUtterance(text);
+  utt.lang = a.lang === 'japanese' ? 'ja-JP' : 'en-US';
+  utt.rate = 0.85;
+  utt.onend = () => { speaking = false; document.getElementById('btnSpeakAll').classList.remove('active'); };
+  speaking = true;
   document.getElementById('btnSpeakAll').classList.add('active');
-  window.speechSynthesis.speak(currentUtterance);
+  window.speechSynthesis.speak(utt);
 }
 
-document.getElementById('btnSpeakAll').addEventListener('click', speakArticle);
+function speakWord() {
+  if (!curWord || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(curWord);
+  u.lang = ARTICLES[cur].lang === 'japanese' ? 'ja-JP' : 'en-US';
+  u.rate = 0.8;
+  window.speechSynthesis.speak(u);
+}
 
 init();
 </script>
