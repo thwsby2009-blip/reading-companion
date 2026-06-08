@@ -332,35 +332,35 @@ header h1{
 const KANA = {
   vowels: ['a','i','u','e','o'],
   rows: [
-    {kai:'k',ch:'か',ks:'カ',rom:['ka','ki','ku','ke','ko'],ex:['可',null,'果物',null,'子']},
-    {kai:'s',ch:'さ',ks:'サ',rom:['sa','si','su','se','so'],ex:['桜',null,null,null,null]},
-    {kai:'t',ch:'た',ks:'タ',rom:['ta','ti','tu','te','to'],ex:['旅',null,null,'手',null]},
-    {kai:'n',ch:'な',ks:'ナ',rom:['na','ni','nu','ne','no'],ex:['夏',null,null,null,null]},
-    {kai:'h',ch:'は',ks:'ハ',rom:['na','ni','nu','ne','no'],ex:['花',null,null,null,null]},
-    {kai:'m',ch:'ま',ks:'マ',rom:['ma','mi','mu','me','mo'],ex:['間',null,null,null,null]},
-    {kai:'y',ch:'や',ks:'ヤ',rom:['ya',null,'yu','ya','yo'],ex:[null,null,'湯',null,null],rowLen:3},
-    {kai:'r',ch:'ら',ks:'ラ',rom:['ra','ri','ru','re','ro'],ex:['拉麵',null,null,null,null]},
-    {kai:'w',ch:'わ',ks:'ワ',rom:['wa',null,null,null,'wo'],ex:[null,null,null,null,null],rowLen:1},
-    {kai:'g',ch:'が',ks:'ガ',rom:['ga','gi','gu','ge','go'],ex:null,isSound:true},
-    {kai:'z',ch:'ざ',ks:'ザ',rom:['za','zi','zu','ze','zo'],ex:null,isSound:true},
-    {kai:'d',ch:'だ',ks:'ダ',rom:['da','di','du','de','do'],ex:null,isSound:true},
-    {kai:'b',ch:'ば',ks:'バ',rom:['ba','bi','bu','be','bo'],ex:null,isSound:true},
-    {kai:'p',ch:'ぱ',ks:'パ',rom:['pa','pi','pu','pe','po'],ex:null,isSound:true},
+    {kai:'k', ch:['か','き','く','け','こ'], ks:['カ','キ','ク','ケ','コ'], rom:['ka','ki','ku','ke','ko'], ex:['可愛','木','果物','消す','子']},
+    {kai:'s', ch:['さ','し','す','せ','そ'], ks:['サ','シ','ス','セ','ソ'], rom:['sa','shi','su','se','so'], ex:['桜','白','巣','世界','空']},
+    {kai:'t', ch:['た','ち','つ','て','と'], ks:['タ','チ','ツ','テ','ト'], rom:['ta','chi','tsu','te','to'], ex:['旅','乳','津','手','東京']},
+    {kai:'n', ch:['な','に','ぬ','ね','の'], ks:['ナ','ニ','ヌ','ネ','ノ'], rom:['na','ni','nu','ne','no'], ex:['夏','庭','沼','猫','残り']},
+    {kai:'h', ch:['は','ひ','ふ','へ','ほ'], ks:['ハ','ヒ','フ','ヘ','ホ'], rom:['ha','hi','fu','he','ho'], ex:['花','人','火','屁','星']},
+    {kai:'m', ch:['ま','み','む','め','も'], ks:['マ','ミ','ム','メ','モ'], rom:['ma','mi','mu','me','mo'], ex:['街','耳','六','女','桃']},
+    {kai:'y', ch:['や','い','ゆ','え','よ'], ks:['ヤ','イ','ユ','エ','ヨ'], rom:['ya',null,'yu',null,'yo'], ex:['山',null,'温泉',null,'世'], rowLen:3},
+    {kai:'r', ch:['ら','り','る','れ','ろ'], ks:['ラ','リ','ル','レ','ロ'], rom:['ra','ri','ru','re','ro'], ex:['拉麵','梨','留守','例会','路上']},
+    {kai:'w', ch:['わ','い','う','え','を'], ks:['ワ','イ','ウ','エ','ヲ'], rom:['wa',null,null,null,'wo'], ex:['私',null,null,null,'推薦'], rowLen:1},
+    {kai:'g', ch:['が','ぎ','ぐ','げ','ご'], ks:['ガ','ギ','グ','ゲ','ゴ'], rom:['ga','gi','gu','ge','go'], isSound:true},
+    {kai:'z', ch:['ざ','じ','ず','ぜ','ぞ'], ks:['ザ','ジ','ズ','ゼ','ゾ'], rom:['za','ji','zu','ze','zo'], isSound:true},
+    {kai:'d', ch:['だ','ぢ','づ','で','ど'], ks:['ダ','ヂ','ヅ','デ','ド'], rom:['da','di','du','de','do'], isSound:true},
+    {kai:'b', ch:['ば','び','ぶ','べ','ぼ'], ks:['バ','ビ','ブ','ベ','ボ'], rom:['ba','bi','bu','be','bo'], isSound:true},
+    {kai:'p', ch:['ぱ','ぴ','ぷ','ぺ','ぽ'], ks:['パ','ピ','プ','ペ','ポ'], rom:['pa','pi','pu','pe','po'], isSound:true},
   ],
   vowelsKana: [
-    {ch:'あ',ks:'ア',rom:'a',ex:'苹果'},
-    {ch:'い',ks:'イ',rom:'i',ex:null},
-    {ch:'う',ks:'ウ',rom:'u',ex:'雨'},
-    {ch:'え',ks:'エ',rom:'e',ex:'絵'},
-    {ch:'お',ks:'オ',rom:'o',ex:'男'}
+    {ch:'あ',ks:'ア',rom:'a',ex:'あめ / 雨'},
+    {ch:'い',ks:'イ',rom:'i',ex:'いぬ / 狗'},
+    {ch:'う',ks:'ウ',rom:'u',ex:'うみ / 海'},
+    {ch:'え',ks:'エ',rom:'e',ex:'えき / 車站'},
+    {ch:'お',ks:'オ',rom:'o',ex:'おちゃ / 茶'}
   ],
   specialRows: [
-    {ch:'や',ks:'ヤ',rom:'ya',ex:'夜'},
-    {ch:'ゆ',ks:'ユ',rom:'yu',ex:'温泉'},
-    {ch:'よ',ks:'ヨ',rom:'yo',ex:'世'},
-    {ch:'わ',ks:'ワ',rom:'wa',ex:null},
-    {ch:'を',ks:'ヲ',rom:'wo',ex:null},
-    {ch:'ん',ks:'ン',rom:'n',ex:null}
+    {ch:'や',ks:'ヤ',rom:'ya',ex:'山 / やま'},
+    {ch:'ゆ',ks:'ユ',rom:'yu',ex:'温泉 / おんせん'},
+    {ch:'よ',ks:'ヨ',rom:'yo',ex:'夜 / よる'},
+    {ch:'わ',ks:'ワ',rom:'wa',ex:'私 / わたし'},
+    {ch:'を',ks:'ヲ',rom:'wo',ex:'推薦 / おすすめ'},
+    {ch:'ん',ks:'ン',rom:'n',ex:'日本 / にほん'}
   ]
 };
 
@@ -410,11 +410,11 @@ function buildAllCards(){
     for(let i=0;i<len;i++){
       if(row.rom[i]){
         allCards.push({
-          h:row.ch[i],
-          k:row.ks[i],
-          r:row.rom[i],
-          t:'row',
-          ex: row.ex && row.ex[i] ? row.ex[i] : (EXAMPLES[row.rom[i]] || '')
+          h: row.ch[i],
+          k: row.ks[i],
+          r: row.rom[i],
+          t: 'row',
+          ex: EXAMPLES[row.rom[i]] || ''
         });
       }
     }
@@ -447,9 +447,9 @@ function render(){
     html += `<div class="kana-row"><span class="row-tag">${rowLabels[idx]||row.kai}</span><div class="cards">`;
     for(let i=0;i<len;i++){
       if(row.rom[i]){
-        html += cardHTML(row.ch[i], row.ks[i], row.rom[i], 'row', row.ex&&row.ex[i]||EXAMPLES[row.rom[i]]||'');
+        html += cardHTML(row.ch[i], row.ks[i], row.rom[i], 'row', EXAMPLES[row.rom[i]] || '');
       } else {
-        html += `<div class="card empty"></div>`;
+        html += `<div class="card empty" style="width:64px;height:76px"></div>`;
       }
     }
     html += '</div></div>';
@@ -462,7 +462,7 @@ function render(){
     html += `<div class="kana-row"><span class="row-tag">${row.kai}行</span><div class="cards">`;
     for(let i=0;i<5;i++){
       if(row.rom[i]) html += cardHTML(row.ch[i], row.ks[i], row.rom[i], 'sound', EXAMPLES[row.rom[i]]||'');
-      else html += `<div class="card empty"></div>`;
+      else html += `<div class="card empty" style="width:64px;height:76px"></div>`;
     }
     html += '</div></div>';
   });
