@@ -335,18 +335,13 @@ header h1{
 
 <header>
   <select id="sel">
-    <option value="0">東京的一天 · 日文</option>
-      <option value="1">日本的四季 · 日文</option>
-      <option value="2">A Day in My Life · 英文</option>
-      <option value="3">旅行計画 · 旅遊日文</option>
-      <option value="4">在日本問路 · 旅遊日文</option>
-      <option value="5">At the Airport · 旅遊英文</option>
-      <option value="6">Booking a Hotel · 旅遊英文</option>
-      <option value="7">商用メール · 商務日文</option>
-      <option value="8">自己紹介 · 商務日文</option>
-      <option value="9">Business Email · 商務英文</option>
-      <option value="10">Meeting Request · 商務英文</option>
-  </select>
+      <option value="0">東京的一天</option>
+      <option value="1">日本の四季</option>
+      <option value="2">旅行計画</option>
+      <option value="3">在日本問路</option>
+      <option value="4">商用メール</option>
+      <option value="5">自己紹介</option>
+    </select>
   <button class="speak-btn" id="btnSpeakAll" title="朗讀全文">🔊</button>
   <h1>互動閱讀器</h1>
 </header>
@@ -529,65 +524,35 @@ const DICT = {
 
 // ─── Articles ─────────────────────────────────────────────────
 const ARTICLES = [
-  // ── 日常生活 ──
   {
-    title:"東京的一天",
-    lang:"japanese",
-    body:"朝、私は咖啡を一杯飲みます。そして駅に向かって歩き始めます。駅はいつも人々が多く、電車も込みます。でも、 사람들은皆静かにしています。私は通勤電車の中で、本を読みます。会社では、ICの回路設計の仕事をしています。昼ごはんは同僚と食堂で食べます。有时、街の小さな店に参ります。咖啡を飲みながら、勉强をこともあります。夜、家に帰ると、少し休憩します。そして日本语の文章を読みます。今日も東京での普通の日常でした。"
+    title:"東京的一天", lang:"japanese",
+    body:"朝、私はコーヒーを一杯飲みます。そして駅に向かって歩き始めます。駅はいつも人々が多く、電車も込みます。でも、 사람들은皆静かにしています。私は通勤電車の中で、本を読みます。会社では、ICの回路設計の仕事をしています。昼ごはんは同僚と食堂で食べます。有时、街の小さな店に参ります。コーヒーを飲みながら、勉强をこともあります。夜、家に帰ると、少し休憩します。そして日本語の文章を読みます。今日も東京での普通の日常でした。",
+    trans:"早晨，我喝一杯咖啡，然後開始走向車站。車站總是很多人，電車也很擁擠。但人們都很安靜。我在通勤電車裡看書。公司裡我做IC電路設計的工作。午餐和同事在食堂吃。有時會去公司附近的小店。喝著咖啡，有時也會學習。晚上回到家，稍微休息一下，然後閱讀日語文章。今天也是在東京普通的一天。"
   },
   {
-    title:"日本的四季",
-    lang:"japanese",
-    body:"日本には美しい四季があります。春になると、桜が咲き、多くの人々が花見をします。公園や川沿いの道は花色で 가득になります。夏は暑くて湿度が高いです。海や山に遊びに行く人々_dmaが多いです。秋になると、街の公園や山々の紅葉が赤や黄色に染まります。涼しい風が吹き、散歩にとても良い季節です。冬は雪が降る地域もあります。寒いですが、温泉に入るととても気持ちがよいです。どの季節もそれぞれの美しさがあります。"
+    title:"日本の四季", lang:"japanese",
+    body:"日本には美しい四季があります。春になると、桜が咲き、多くの人々が花見をします。公園や川沿いの道は花色でいっぱいになります。夏は暑くて湿度が高いです。海や山に遊びに行く人々が多いです。秋になると、街の公園や山々の紅葉が赤や黄色に染まります。涼しい風が吹き、散歩にとても良い季節です。冬は雪が降る地域もあります。寒いですが、温泉に入るととても気持ちがよいです。どの季節もそれぞれの美しさがあります。",
+    trans:"日本有美麗的四季。春天來臨時，櫻花綻放，許多人都會去賞櫻。夏天炎熱潮濕，很多人會去海邊或山上。秋天時，紅葉變成紅色和黃色。涼爽的風吹來，非常適合散步。冬天有些地方會下雪。雖然寒冷，但泡溫泉非常舒服。每個季節都有各自的美。"
   },
   {
-    title:"A Day in My Life",
-    lang:"english",
-    body:"I wake up at six in the morning. First, I drink a cup of coffee. Then I get ready for work. I walk to the station because the office is nearby. The train is always crowded at this time. I read books on the train. I work in an office in the city. I have lunch with my friends at noon. Sometimes we go to a small shop near the office. In the evening, I walk home. The streets are quiet at night. After dinner, I read or watch movies. I always sleep at eleven. It is a simple but happy life."
-  },
-  // ── 旅遊日文 ──
-  {
-    title:"旅行計画",
-    lang:"japanese",
-    body:"来月、日本を旅行する計画です。飛行機で大阪に到着して、京都まで新幹線で移動します。京都では金閣寺と清水寺を訪れたいです。奈良も寄ってみようと思います。奈良公園の鹿真的很亲近人で面白いです。食べ物は章魚焼と大阪焼を試してみたいです。旅館は事前に予約しました。日本語が少しできますので、道を聞くのも大丈夫でしょう。旅行が来月とても楽しみにしています。"
+    title:"旅行計画", lang:"japanese",
+    body:"来月、日本を旅行する計画です。飛行機で大阪に到着して、京都まで新幹線で移動します。京都では金閣寺と清水寺を訪れたいです。奈良も寄ってみようと思います。奈良公園の鹿真的很亲近人で面白いです。食べ物は章魚焼と大阪焼を試してみたいです。旅館は事前に予約しました。日本語が少しできますので、道を聞くのも大丈夫でしょう。旅行が来月とても楽しみにしています。",
+    trans:"我計劃下個月去日本旅行。搭機到大阪，然後坐新幹線去京都。想去京都的金閣寺和清水寺。也想順路去奈良。奈良公園的鹿會主動靠近人，很有趣。想品嘗章魚燒和大阪燒。飯店已經提前預訂了。因為會一點日文，問路應該沒問題。非常期待下個月的旅行。"
   },
   {
-    title:"在日本問路",
-    lang:"japanese",
-    body:"すみません、道を教えていただけますか。駅はどこですか。／この道をまっすぐ行ってください。左に曲がると見えますが、もう少し歩けば右に見えます。／ありがとうございます。／どういたしまして。遠くから来られましたか。／はい、台湾から来ました。日本は美しい国ですね。／ありがとうございます。どこへ向かですか。／京都駅へ行きたいです。／JR線で三駅です。まっすぐ行けば迷いますよ。"
-  },
-  // ── 旅遊英文 ──
-  {
-    title:"At the Airport",
-    lang:"english",
-    body:"Excuse me, where is the check-in counter for Japan Airlines? / It is on the third floor, past the security area. Thank you. Is this flight on time? / Yes, it departs at 2:30 PM. How many bags do you have? I have two suitcases and a carry-on. That is fine. Here is your boarding pass. Your gate is B12. Thank you very much. You are welcome. Have a nice flight!"
+    title:"在日本問路", lang:"japanese",
+    body:"すみません、道を教えていただけますか。駅はどこですか。この道をまっすぐ行ってください。左に曲がると見えますが、もう少し歩けば右に見えます。ありがとうございます。どういたしまして。遠くから来られましたか。はい、台湾から来ました。日本は美しい国ですね。ありがとうございます。どこへ向かですか。京都駅へ行きたいです。JR線で三駅です。まっすぐ行くと迷いますよ。",
+    trans:"不好意思，可以告訴我路嗎？車站在哪裡？請沿這條路直走。左轉就能看到了，再走一下就會在右手邊看到。謝謝。不客氣。您是從遠方來的嗎？是的，從台灣來的。日本是個美麗的國家呢。謝謝。您要去哪裡？想去京都車站。坐JR線三站就到了。直走會迷路的。"
   },
   {
-    title:"Booking a Hotel",
-    lang:"english",
-    body:"Good evening, I would like to book a room for two nights. What kind of room would you like? I need a double room with a private bathroom. Check-in is at 3 PM and check-out is at 11 AM. Is breakfast included? Yes, breakfast is served from 7 to 10 AM. The price is eighty dollars per night. That sounds great. May I have your name, please?"
-  },
-  // ── 商務日文 ──
-  {
-    title:" 商用メール",
-    lang:"japanese",
-    body:"件名：来週の会議について田中課長様、打擾いたします。先日のご報告、ご確認ありがとうございます。来週の水曜日に会議を開きタイトいたい，您的意向はよろしいでしょうか。場所はまだ決めていませんが、午後2時がご希望でしょうか。もしご都合が悪ければ、木曜の午前中も可能です。ご返事お待ちしております。よろしくお願いいたします。営業部　鈴木一郎"
+    title:"商用メール", lang:"japanese",
+    body:"田中課長様、打擾いたします。先日のご報告、ご確認ありがとうございます。来週の水曜日に会議を開きたいたいのですが、ご意向はよろしいでしょうか。場所はまだ決めていませんが、午後2時がご希望でしょうか。もしご都合が悪ければ、木曜の午前中も可能です。ご返事お待ちしております。よろしくお願いいたします。営業部　鈴木一郎",
+    trans:"田中課長，打擾了。感謝您確認我們之前的報告。想在下週三開會，不知您意下如何？地點還沒決定，但下午兩點您方便嗎？如果不方便的話，星期四上午也可以。期待您的回覆。謝謝。營業部　鈴木一郎"
   },
   {
-    title:"自己紹介",
-    lang:"japanese",
-    body:"はじめまして、陳大明と申します。台湾から来ました。主に電子部品の輸出做生意しています。本次御社との取引実現、心より楽しみにしております。日本語はまだあまり上手ではないですが、誠意を持って頑張りますので、何卒ご指導のほどよろしくお願いいたします。遠い台湾から参りましたが、日本市場は大きな魅力を感じています。これからも末永いお付合いをどうぞよろしくお願いいたします。"
-  },
-  // ── 商務英文 ──
-  {
-    title:"Business Email",
-    lang:"english",
-    body:"Dear Mr. Johnson, Thank you for your email dated March 5th. We have reviewed your proposal and found it very interesting. We would like to arrange a meeting to discuss the details further. Would next Tuesday at 2 PM be convenient for you? Please let us know your availability. We look forward to your reply. Best regards, David Chen, Sales Manager."
-  },
-  {
-    title:"Meeting Request",
-    lang:"english",
-    body:"Good morning. I am writing to schedule a meeting with your team. Our company is interested in discussing a potential partnership. Could we meet sometime this week? We are available on Wednesday or Thursday afternoon. The meeting should take about one hour. Please let us know which time works best for you. We are flexible and happy to accommodate your schedule."
+    title:"自己紹介", lang:"japanese",
+    body:"はじめまして、陳大明と申します。台湾から来ました。主に電子部品の輸出做生意しています。本次御社との取引実現、心より楽しみにしております。日本語はまだあまり上手ではないですが、誠意を持って頑張りますので、何卒ご指導のほどよろしくお願いいたします。遠い台湾から参りましたが、日本市場は大きな魅力を感じています。これからも末永いお付合いをどうぞよろしくお願いいたします。",
+    trans:"初次見面，我是陳大明，來自台灣。主要從事電子零件的出口貿易。這次能與貴公司合作，我由衷期待。雖然日語還不太流利，但我會誠心努力，還請多多指點。希望今後能與貴公司長期合作，請多多關照。"
   }
 ];
 
