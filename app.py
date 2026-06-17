@@ -7,6 +7,7 @@ html_dir = pathlib.Path(__file__).parent
 
 PAGES = {
   "📖 日文閱讀": "reading_companion.html",
+  "📝 JLPT N1": "jlpt.html",
   "🔤 50音學習": "kana50.html"
 }
 
