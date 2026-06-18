@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JLPT N1 學習</title>
+<title>JLPT 學習</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Inter:wght@400;500;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
   --paper: #faf8f4;
@@ -14,500 +14,499 @@
   --ink-3: #a8a29a;
   --rule: #e2ddd4;
   --gold: #9d7200;
-  --gold-bg: #fef9e7;
-  --red: #c0392b;
-  --green: #276e4d;
   --surface: #fff;
-  --shadow: rgba(0,0,0,0.08);
+  --n5: #4a9eff; --n4: #27ae60; --n3: #f39c12; --n2: #e67e22; --n1: #c0392b;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { font-size: 15px; }
 body {
-  font-family: 'Noto Sans TC', 'Inter', sans-serif;
+  font-family: 'Noto Sans TC', sans-serif;
   background: var(--paper);
   color: var(--ink);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
-
 header {
   background: var(--surface);
   border-bottom: 1px solid var(--rule);
-  padding: 14px 28px;
+  padding: 10px 16px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
+  flex-wrap: wrap;
   position: sticky;
   top: 0;
   z-index: 10;
 }
 header h1 {
   font-family: 'Noto Serif JP', serif;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
   color: var(--ink);
 }
-header h1 span { color: var(--gold); }
-
-.tabs {
-  display: flex;
-  gap: 4px;
-  margin-left: auto;
-}
-.tab-btn {
-  font-family: 'Noto Sans TC', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 6px 14px;
+.level-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+.level-btn {
+  font-size: 11px; font-weight: 600;
+  padding: 5px 11px;
   border: 1px solid var(--rule);
-  border-radius: 20px;
+  border-radius: 14px;
   background: var(--surface);
   color: var(--ink-2);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.15s;
 }
-.tab-btn:hover { border-color: var(--gold); color: var(--gold); }
-.tab-btn.active {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: #fff;
+.level-btn:hover { border-color: var(--gold); color: var(--gold); }
+.level-btn.active.n5 { background: var(--n5); border-color: var(--n5); color: #fff; }
+.level-btn.active.n4 { background: var(--n4); border-color: var(--n4); color: #fff; }
+.level-btn.active.n3 { background: var(--n3); border-color: var(--n3); color: #fff; }
+.level-btn.active.n2 { background: var(--n2); border-color: var(--n2); color: #fff; }
+.level-btn.active.n1 { background: var(--n1); border-color: var(--n1); color: #fff; }
+.type-tabs { display: flex; gap: 4px; margin-left: auto; }
+.type-btn {
+  font-size: 11px; font-weight: 500;
+  padding: 5px 13px;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: all 0.15s;
 }
-
-.main {
-  flex: 1;
-  padding: 32px 28px 60px;
-  max-width: 720px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-/* ── 進度列 ── */
-.progress-bar {
-  background: var(--rule);
-  border-radius: 8px;
-  height: 6px;
-  margin-bottom: 28px;
-  overflow: hidden;
-}
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--gold), #c9940a);
-  border-radius: 8px;
-  transition: width 0.4s ease;
-  width: 0%;
-}
-.progress-text {
-  font-size: 12px;
-  color: var(--ink-3);
-  text-align: right;
-  margin-top: 6px;
-  letter-spacing: 0.05em;
-}
-
-/* ── 單字卡 ── */
+.type-btn.active { background: var(--gold); border-color: var(--gold); color: #fff; }
+.main { padding: 20px 16px 70px; max-width: 620px; margin: 0 auto; }
+.progress-bar { height: 3px; background: var(--rule); border-radius: 2px; margin-bottom: 6px; }
+.progress-fill { height: 100%; background: var(--gold); border-radius: 2px; width: 0%; transition: width 0.3s; }
+.progress-text { font-size: 11px; color: var(--ink-3); margin-bottom: 18px; }
 .card {
   background: var(--surface);
   border: 1px solid var(--rule);
   border-radius: 12px;
-  padding: 24px 28px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px var(--shadow);
-  transition: box-shadow 0.2s;
+  padding: 24px 20px;
+  margin-bottom: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
 }
-.card:hover { box-shadow: 0 4px 16px var(--shadow); }
-
-.card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 12px;
-}
-.kanji {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.2;
-}
-.kana {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1rem;
-  color: var(--ink-2);
-  margin-top: 4px;
-}
-.level-badge {
-  font-size: 10px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 10px;
-  letter-spacing: 0.05em;
-}
-.level-badge.n1 { background: var(--red); color: #fff; }
-.level-badge.gram { background: var(--green); color: #fff; }
-
+.card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+.kanji { font-family: 'Noto Serif JP', serif; font-size: 2.1rem; font-weight: 700; line-height: 1.2; }
+.kana { font-size: 0.9rem; color: var(--ink-2); margin-top: 4px; letter-spacing: 0.04em; }
+.level-tag { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 10px; color: #fff; }
+.level-tag.n5 { background: var(--n5); }
+.level-tag.n4 { background: var(--n4); }
+.level-tag.n3 { background: var(--n3); }
+.level-tag.n2 { background: var(--n2); }
+.level-tag.n1 { background: var(--n1); }
 .meaning {
-  font-size: 0.95rem;
-  color: var(--ink-2);
-  margin-bottom: 12px;
-  padding-left: 8px;
-  border-left: 3px solid var(--gold);
-  line-height: 1.6;
+  font-size: 0.98rem; color: var(--ink); font-weight: 500;
+  padding: 10px 0; border-top: 1px solid var(--rule);
 }
-
-.example {
-  background: var(--paper);
-  border-radius: 8px;
-  padding: 12px 16px;
-  font-size: 0.9rem;
-  line-height: 1.8;
-}
-.example-jp {
-  font-family: 'Noto Serif JP', serif;
-  color: var(--ink);
-  margin-bottom: 4px;
-}
-.example-cn {
-  color: var(--ink-3);
-  font-size: 0.85rem;
-}
-
-.answer-btn {
-  margin-top: 12px;
-  background: none;
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 12px;
-  color: var(--ink-2);
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: 'Noto Sans TC', sans-serif;
-}
-.answer-btn:hover { border-color: var(--gold); color: var(--gold); }
-.hidden { display: none; }
-
-/* ── 文法卡 ── */
-.grammar-card {
-  background: var(--surface);
-  border: 1px solid var(--rule);
-  border-radius: 12px;
-  padding: 24px 28px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px var(--shadow);
-}
-.pattern {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--ink);
-  margin-bottom: 10px;
-  letter-spacing: 0.03em;
-}
-.pattern-note {
-  font-size: 0.8rem;
-  color: var(--ink-3);
-  margin-bottom: 12px;
-}
-.meaning-gr {
-  font-size: 0.95rem;
-  color: var(--ink-2);
-  margin-bottom: 12px;
-  padding-left: 8px;
-  border-left: 3px solid var(--green);
-  line-height: 1.6;
-}
-.example-gr {
-  background: var(--paper);
-  border-radius: 8px;
-  padding: 12px 16px;
-  font-size: 0.9rem;
-  line-height: 1.8;
-}
-.example-gr-jp {
-  font-family: 'Noto Serif JP', serif;
-  color: var(--ink);
-  margin-bottom: 4px;
-}
-.example-gr-cn {
-  color: var(--ink-3);
-  font-size: 0.85rem;
-}
-
-/* ── 底部導航 ── */
+.example { margin-top: 12px; background: var(--paper); border-radius: 8px; padding: 12px 14px; }
+.example-jp { font-family: 'Noto Serif JP', serif; font-size: 0.9rem; color: var(--ink); line-height: 1.7; }
+.example-cn { font-size: 0.82rem; color: var(--ink-2); margin-top: 5px; line-height: 1.6; }
+.grammar-card { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 22px 20px; margin-bottom: 14px; }
+.grammar-card .pattern { font-family: 'Noto Serif JP', serif; font-size: 1.25rem; font-weight: 700; color: var(--gold); }
+.grammar-card .pattern-note { font-size: 0.78rem; color: var(--ink-3); margin-top: 4px; }
+.grammar-card .meaning-gr { font-size: 0.93rem; color: var(--ink); font-weight: 500; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--rule); }
+.grammar-card .example-gr { margin-top: 10px; background: var(--paper); border-radius: 8px; padding: 11px 14px; }
+.grammar-card .example-gr-jp { font-size: 0.88rem; color: var(--ink); line-height: 1.7; font-family: 'Noto Serif JP', serif; }
+.grammar-card .example-gr-cn { font-size: 0.8rem; color: var(--ink-2); margin-top: 4px; }
+.end-card { text-align: center; padding: 48px 20px; }
+.end-card .icon { font-size: 2.8rem; margin-bottom: 12px; }
+.end-card h3 { font-size: 1rem; margin-bottom: 8px; }
+.end-card p { font-size: 0.86rem; color: var(--ink-3); }
 .nav-bar {
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
+  position: fixed; bottom: 0; left: 0; right: 0;
   background: var(--surface);
   border-top: 1px solid var(--rule);
-  display: flex;
-  gap: 8px;
-  padding: 12px 20px;
-  justify-content: center;
+  padding: 10px 16px;
+  display: flex; gap: 10px;
+  max-width: 620px; margin: 0 auto;
 }
 .nav-btn {
-  background: var(--gold-bg);
-  border: 1px solid var(--gold);
-  border-radius: 8px;
-  padding: 10px 24px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--gold);
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: 'Noto Sans TC', sans-serif;
+  flex: 1; padding: 11px;
+  border: 1px solid var(--rule); border-radius: 10px;
+  background: var(--surface);
+  font-size: 0.86rem; font-weight: 500;
+  cursor: pointer; color: var(--ink); transition: all 0.15s;
 }
-.nav-btn:hover { background: var(--gold); color: #fff; }
-.nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.section-header {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--ink);
-  margin: 32px 0 16px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--gold);
-}
-.section-header:first-child { margin-top: 0; }
-
-.end-card {
-  text-align: center;
-  padding: 40px 20px;
-  color: var(--ink-2);
-}
-.end-card .icon { font-size: 2.5rem; margin-bottom: 12px; }
-.end-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
-.end-card p { font-size: 0.9rem; color: var(--ink-3); }
+.nav-btn:disabled { opacity: 0.35; cursor: default; }
+.nav-btn.primary { background: var(--gold); border-color: var(--gold); color: #fff; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>JLPT <span>N1</span> 學習</h1>
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('vocab')">單字</button>
-    <button class="tab-btn" onclick="showTab('grammar')">文法</button>
+  <h1>JLPT 學習</h1>
+  <div class="level-tabs">
+    <button class="level-btn n5 active" onclick="setLevel('n5')">N5</button>
+    <button class="level-btn n4" onclick="setLevel('n4')">N4</button>
+    <button class="level-btn n3" onclick="setLevel('n3')">N3</button>
+    <button class="level-btn n2" onclick="setLevel('n2')">N2</button>
+    <button class="level-btn n1" onclick="setLevel('n1')">N1</button>
+  </div>
+  <div class="type-tabs">
+    <button class="type-btn active" onclick="setType('vocab')">單字</button>
+    <button class="type-btn" onclick="setType('grammar')">文法</button>
   </div>
 </header>
 
 <div class="main">
   <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-  <div class="progress-text" id="progressText">0 / 0 已復習</div>
-
-  <div id="vocabTab"></div>
-  <div id="grammarTab" style="display:none"></div>
+  <div class="progress-text" id="progressText">— / —</div>
+  <div id="content"></div>
 </div>
 
 <div class="nav-bar">
-  <button class="nav-btn" id="prevBtn" onclick="prevCard()" disabled>← 上一個</button>
-  <button class="nav-btn" id="nextBtn" onclick="nextCard()">下一個 →</button>
+  <button class="nav-btn" id="prevBtn" onclick="prev()" disabled>← 上一個</button>
+  <button class="nav-btn primary" id="nextBtn" onclick="next()">下一個 →</button>
 </div>
 
 <script>
-const VOCAB = [
-  { kanji: "曖昧", kana: "あいまい", meaning: "曖昧、含糊不清", ex_jp: "彼の返事は曖昧で、よくわからなかった。", ex_cn: "他的回答很含糊，讓人搞不清楚。" },
-  { kanji: "昏暗", kana: "こんあん", meaning: "昏暗、陰暗", ex_jp: "洞窟の中は昏暗としていて、何も見えない。", ex_cn: "洞窟裡面很昏暗，什麼都看不見。" },
-  { kanji: "幾ら", kana: "いくら", meaning: "多少、多少錢（書面語）", ex_jp: "交通費は几何らかかったか、覚えていない。", ex_cn: "交通費花了多少，已經不記得了。" },
-  { kanji: "婚姻", kana: "こんいん", meaning: "婚姻、結婚", ex_jp: "婚姻届は 市役所に出した。", ex_cn: "結婚登記已經送到市政府了。" },
-  { kanji: "遭遇", kana: "そうぐう", meaning: "遭遇、碰上", ex_jp: "山中では熊遭遇の危険がある。", ex_cn: "在山中有遇到熊的危險。" },
-  { kanji: "隠密", kana: "おんみつ", meaning: "隱蔽、秘密行動", ex_jp: "彼は隠密行動で敵地へ潜入した。", ex_cn: "他秘密行動潛入了敵方領土。" },
-  { kanji: "愚痴", kana: "ぐち", meaning: "抱怨、發牢騷", ex_jp: "彼はいつも愚痴を言っている。", ex_cn: "他總是在發牢騷。" },
-  { kanji: "罵倒", kana: "ばとう", meaning: "辱罵、謾罵", ex_jp: "ネット上の罵倒は止めてほしい。", ex_cn: "希望停止網路上的謾罵。" },
-  { kanji: "曖昧さ", kana: "あいまいさ", meaning: "含糊不清的程度", ex_jp: "この法律の曖昧さは問題だ。", ex_cn: "這條法律的含糊不清是個問題。" },
-  { kanji: "敬意", kana: "けいい", meaning: "敬意、尊敬", ex_jp: "先人の功績に敬意を表する。", ex_cn: "對先人的功績表示敬意。" },
-  { kanji: "迫害", kana: "はくが", meaning: "迫害", ex_jp: "宗教迫害を受けて、国を逃れた。", ex_cn: "受到宗教迫害，逃離了國家。" },
-  { kanji: "領域", kana: "りょういき", meaning: "領域、範圍", ex_jp: "この問題は私の専門領域外だ。", ex_cn: "這個問題在我的專業領域之外。" },
-  { kanji: "矛盾", kana: "むじゅん", meaning: "矛盾", ex_jp: "彼の発言には矛盾が多い。", ex_cn: "他的發言有很多矛盾。" },
-  { kanji: "崩壊", kana: "ほうかい", meaning: "崩壞、垮台", ex_jp: "、地震で堤防が崩壊した。", ex_cn: "因地震堤防崩壞了。" },
-  { kanji: "補償", kana: "ほしょう", meaning: "補償、賠償", ex_jp: "被害者に十分な補償を行うべきだ。", ex_cn: "應該對受害者給予充足的賠償。" },
-  { kanji: "迫害者", kana: "はくがしゃ", meaning: "迫害者", ex_jp: "迫害者を特定するのは難しかった。", ex_cn: "要確定迫害者是很困難的。" },
-  { kanji: "誕生", kana: "たんじょう", meaning: "誕生、出生", ex_jp: "新中国が1949年に誕生する。", ex_cn: "新中國在1949年誕生。" },
-  { kanji: "崩壊寸前", kana: "ほうかいすんぜん", meaning: "即將崩潰", ex_jp: "この组织は崩壊寸前だ。", ex_cn: "這個組織即將崩潰。" },
-  { kanji: "密集", kana: "みっしゅう", meaning: "密集", ex_jp: "人口が都市に密集している。", ex_cn: "人口密集在城市裡。" },
-  { kanji: "独占", kana: "どくせん", meaning: "獨占、壟斷", ex_jp: "技術の独占は崩れつつある。", ex_cn: "技術的壟斷正在崩解。" },
-  { kanji: "濫用", kana: "らんよう", meaning: "濫用", ex_jp: "権限の濫用は許されない。", ex_cn: "不被允許濫用職權。" },
-  { kanji: "象徴", kana: "しょうちょう", meaning: "象徵", ex_jp: "桜は日本の象徴だ。", ex_cn: "櫻花是日本的象徵。" },
-  { kanji: "調和", kana: "ちょうわ", meaning: "調和、和諧", ex_jp: "自然と建筑的調和が美しい。", ex_cn: "自然和建築的和諧很美。" },
-  { kanji: "調和", kana: "ちょうわ", meaning: "協調、配合", ex_jp: "チームワークは調和が重要だ。", ex_cn: "團隊合作中協調很重要。" },
-  { kanji: "迫害", kana: "はくが", meaning: "迫害", ex_jp: "和政治的不満から迫害を受けた。", ex_cn: "因為政治不滿而受到迫害。" },
-  { kanji: "補償", kana: "ほしょう", meaning: "補償、賠償", ex_jp: "損失に対する補償を要求した。", ex_cn: "要求對損失進行補償。" },
-  { kanji: "領域", kana: "りょういき", meaning: "領域、範圍", ex_jp: "研究の領域は広がる一方だ。", ex_cn: "研究的領域一直在擴大。" },
-  { kanji: "矛盾", kana: "むじゅん", meaning: "矛盾、牴觸", ex_jp: "法律の矛盾点を指摘した。", ex_cn: "指出了法律的矛盾之處。" },
-  { kanji: "崩壊", kana: "ほうかい", meaning: "崩壞、瓦解", ex_jp: "信用が崩壊すると、人は離れ始める。", ex_cn: "信用崩潰的話，人就會開始離去。" },
-  { kanji: "補償", kana: "ほしょう", meaning: "補償、保固", ex_jp: "製品保証の一環として補償を行う。", ex_cn: "作為產品保固的一部分進行補償。" },
-  { kanji: "独占", kana: "どくせん", meaning: "獨占、專利", ex_jp: "その技術は企業が独占している。", ex_cn: "那項技術被企業獨占。" },
-  { kanji: "密集", kana: "みっしゅう", meaning: "密集、稠密", ex_jp: "蟻は食物を密集させて蓄える。", ex_cn: "螞蟻會把食物密集存放儲備。" },
-  { kanji: "濫用", kana: "らんよう", meaning: "濫用、亂用", ex_jp: "藥の濫用は體に悪い。", ex_cn: "濫用藥物對身體不好。" },
-  { kanji: "象徴", kana: "しょうちょう", meaning: "象徵、標誌", ex_jp: "白色は純粋さの象徴だ。", ex_cn: "白色是純潔的象徵。" },
-  { kanji: "調和", kana: "ちょうわ", meaning: "調和、均勻", ex_jp: "音の調和が美しい曲子だ。", ex_cn: "這是一首音調和諧的曲子。" },
-  { kanji: "領域", kana: "りょういき", meaning: "領域、範疇", ex_jp: "新しい領域に進出する。", ex_cn: "進軍新的領域。" },
-  { kanji: "矛盾", kana: "むじゅん", meaning: "矛盾、對立", ex_jp: "二人の証言には矛盾がある。", ex_cn: "兩人的證詞有矛盾。" },
-  { kanji: "崩壊", kana: "ほうかい", meaning: "崩毀、瓦解", ex_jp: " Support崩壊でシステムが停止した。", ex_cn: "因為Support崩潰，系統停止了。" },
-  { kanji: "補償", kana: "ほしょう", meaning: "補償、貼補", ex_jp: "通勤費はすべて会社負担で補償される。", ex_cn: "通勤費全部由公司負擔補貼。" },
-  { kanji: "独占", kana: "どくせん", meaning: "獨占、包辦", ex_jp: "ゲームを独 占して玩了一整天。", ex_cn: "独占游戲玩了一整天。" },
-  { kanji: "密集", kana: "みっしゅう", meaning: "叢生、茂密", ex_jp: "森の中で木が密集している場所がある。", ex_cn: "森林中有樹木密集的地方。" },
-  { kanji: "濫用", kana: "らんよう", meaning: "妄用、誤解", ex_jp: "彼は言葉を濫用して誤解を招いた。", ex_cn: "他妄用詞語招致了誤解。" },
-  { kanji: "象徴", kana: "しょうちょう", meaning: "象徵、表象", ex_jp: "この絵は平和の象徴として有名だ。", ex_cn: "這幅畫作為和平的象徵而聞名。" },
-  { kanji: "調和", kana: "ちょうわ", meaning: "和睦、融洽", ex_jp: "異文化との調和を保つのは難しい。", ex_cn: "與異國文化保持融洽是很難的。" },
-  { kanji: "崩壊", kana: "ほうかい", meaning: "崩落、塌方", ex_jp: "長雨で崖が崩壊した。", ex_cn: "因為長雨懸崖崩落了。" },
-  { kanji: "補償", kana: "ほしょう", meaning: "押金、保證金", ex_jp: "部屋を退去する際は補償を払う。", ex_cn: "退房時要付押金。" },
-  { kanji: "独占", kana: "どくせん", meaning: "霸占、獨享", ex_jp: "彼はいつも inmue を独占しようとする。", ex_cn: "他總是想霸占房間。" },
-  { kanji: "密集", kana: "みっしゅう", meaning: "蜂擁、聚集", ex_jp: "ファンがスタ드에密集した。", ex_cn: "粉絲們蜂擁到體育場。" },
-  { kanji: "濫用", kana: "らんよう", meaning: "糟蹋、浪費", ex_jp: "自然の濫用が環境問題を招いた。", ex_cn: "糟蹋自然引來了環境問題。" },
-  { kanji: "象徴", kana: "しょうちょう", meaning: "象徵、意義", ex_jp: "火はeltasの象徴だ。", ex_cn: "火是文明的象徵。" },
-  { kanji: "調和", kana: "ちょうわ", meaning: "平衡、均衡", ex_jp: "仕事と休養の調和を保つべきだ。", ex_cn: "應該保持工作和休閒的平衡。" },
-  { kanji: "崩壊", kana: "ほうかい", meaning: "崩解、分裂", ex_jp: "連合は内部崩壊で解消した。", ex_cn: "聯合因內部分裂而解散了。" },
-  { kanji: "補償", kana: "ほしょう", meaning: "填補、補足", ex_jp: "欠席した日の補償に別日期に働いた。", ex_cn: "作為缺席日的補救，別的日期工作了。" },
-  { kanji: "独占", kana: "どくせん", meaning: "壟斷、排他", ex_jp: "市場は少数企業に独占されている。", ex_cn: "市場被少數企業壟斷。" },
-  { kanji: "密集", kana: "みっしゅう", meaning: "充血、淤血", ex_jp: "步行で目に血が密集した。", ex_cn: "因為熬夜眼睛充血了。" },
-];
+const VOCAB = {
+  n5: [
+    { kanji:"一",kana:"いち",meaning:"一",ex_jp:"りんごを一つください。",ex_cn:"請給我一個蘋果。"},
+    { kanji:"二",kana:"に",meaning:"二",ex_jp:"二郎に行く。",ex_cn:"去二郎拉麵店。"},
+    { kanji:"三",kana:"さん",meaning:"三",ex_jp:"三月は春です。",ex_cn:"三月是春天。"},
+    { kanji:"四",kana:"よん/し",meaning:"四",ex_jp:"四季は春夏秋冬です。",ex_cn:"四季是春夏秋冬。"},
+    { kanji:"五",kana:"ご",meaning:"五",ex_jp:"五月は端午の節句です。",ex_cn:"五月是端午節。"},
+    { kanji:"六",kana:"ろく",meaning:"六",ex_jp:"六本木に行きました。",ex_cn:"去了六本木。"},
+    { kanji:"七",kana:"なな",meaning:"七",ex_jp:"七月は暑い。",ex_cn:"七月很熱。"},
+    { kanji:"八",kana:"はち",meaning:"八",ex_jp:"팔국은甘い。",ex_cn:"八福仙是甜的。"},
+    { kanji:"九",kana:"きゅう",meaning:"九",ex_jp:"九月は涼しい。",ex_cn:"九月很涼爽。"},
+    { kanji:"十",kana:"じゅう",meaning:"十",ex_jp:"十月は秋です。",ex_cn:"十月是秋天。"},
+    { kanji:"日",kana:"ひ",meaning:"日、太陽",ex_jp:"今日は晴れです。",ex_cn:"今天是晴天。"},
+    { kanji:"月",kana:"つき",meaning:"月亮",ex_jp:"月が綺麗です。",ex_cn:"月亮很美。"},
+    { kanji:"火",kana:"ひ",meaning:"火",ex_jp:"火曜日は火曜日。",ex_cn:"星期二是火曜日。"},
+    { kanji:"水",kana:"みず",meaning:"水",ex_jp:"水を飲みたいです。",ex_cn:"想喝水。"},
+    { kanji:"木",kana:"き",meaning:"樹",ex_jp:"木の下で休憩します。",ex_cn:"在樹下休息。"},
+    { kanji:"金",kana:"かね",meaning:"金錢",ex_jp:"お金を落としました。",ex_cn:"把錢弄掉了。"},
+    { kanji:"土",kana:"つち",meaning:"泥土",ex_jp:"土を掘る。",ex_cn:"挖泥土。"},
+    { kanji:"人",kana:"ひと",meaning:"人",ex_jp:"人は優しいです。",ex_cn:"人是善良的。"},
+    { kanji:"男",kana:"おとこ",meaning:"男人",ex_jp:"あの 男の人を知っていますか。",ex_cn:"認識那個男人嗎？"},
+    { kanji:"女",kana:"おんな",meaning:"女人",ex_jp:"女の子は元気です。",ex_cn:"女孩子很有活力。"},
+    { kanji:"子",kana:"こ",meaning:"小孩",ex_jp:"子供は外で遊びます。",ex_cn:"小孩在外面玩。"},
+    { kanji:"山",kana:"やま",meaning:"山",ex_jp:"富士山は美しい。",ex_cn:"富士山很美。"},
+    { kanji:"川",kana:"かわ",meaning:"河流",ex_jp:"川で魚を捕まえた。",ex_cn:"在河裡抓魚。"},
+    { kanji:"海",kana:"うみ",meaning:"海",ex_jp:"夏、海に行きます。",ex_cn:"夏天去海邊。"},
+    { kanji:"空",kana:"そら",meaning:"天空",ex_jp:"空が青い。",ex_cn:"天空是藍色的。"},
+    { kanji:"雨",kana:"あめ",meaning:"雨",ex_jp:"雨が降っています。",ex_cn:"正在下雨。"},
+    { kanji:"友",kana:"とも",meaning:"朋友",ex_jp:"友達に会いにいきます。",ex_cn:"去見朋友。"},
+    { kanji:"本",kana:"ほん",meaning:"書",ex_jp:"本を読みます。",ex_cn:"看書。"},
+    { kanji:"食",kana:"たべ",meaning:"吃",ex_jp:"朝ごはんを食べました。",ex_cn:"吃了早餐。"},
+    { kanji:"飲",kana:"のみ",meaning:"喝",ex_jp:"お茶を飲みます。",ex_cn:"喝茶。"},
+    { kanji:"見",kana:"み",meaning:"看",ex_jp:"映画を見ます。",ex_cn:"看電影。"},
+    { kanji:"聞",kana:"き",meaning:"聽",ex_jp:"音楽を聞きます。",ex_cn:"聽音樂。"},
+    { kanji:"書",kana:"か",meaning:"寫",ex_jp:"手紙を書きます。",ex_cn:"寫信。"},
+    { kanji:"話",kana:"はな",meaning:"說話",ex_jp:"日本語で話してください。",ex_cn:"請用日語說。"},
+    { kanji:"行",kana:"い",meaning:"去",ex_jp:"学校に行きます。",ex_cn:"去學校。"},
+    { kanji:"来",kana:"く",meaning:"來",ex_jp:"友達が家に来ます。",ex_cn:"朋友來家裡。"},
+    { kanji:"大",kana:"おお",meaning:"大",ex_jp:"大きい犬ですね。",ex_cn:"是很大的狗呢。"},
+    { kanji:"小",kana:"ちい",meaning:"小",ex_jp:"小さな花が咲いています。",ex_cn:"小花朵正在開放。"},
+    { kanji:"新",kana:"あたら",meaning:"新",ex_jp:"新しい車を買いました。",ex_cn:"買了新車。"},
+    { kanji:"古",kana:"ふる",meaning:"舊",ex_jp:"古いお寺です。",ex_cn:"是古老的寺廟。"},
+    { kanji:"今",kana:"いま",meaning:"現在",ex_jp:"今、何時ですか。",ex_cn:"現在幾點？"},
+    { kanji:"好",kana:"この",meaning:"喜歡",ex_jp:"映画が好きです。",ex_cn:"喜歡電影。"},
+    { kanji:"何",kana:"なに",meaning:"什麼",ex_jp:"これは何ですか。",ex_cn:"這是什麼？"},
+  ],
+  n4: [
+    { kanji:"勉強",kana:"べんきょう",meaning:"學習",ex_jp:"毎日日本語を勉强しています。",ex_cn:"每天都在學日語。"},
+    { kanji:"先生",kana:"せんせい",meaning:"老師",ex_jp:"先生、質問があります。",ex_cn:"老師，有問題請教。"},
+    { kanji:"会社",kana:"かいしゃ",meaning:"公司",ex_jp:"每天会社に通っています。",ex_cn:"每天通勤去公司。"},
+    { kanji:"銀行",kana:"ぎんこう",meaning:"銀行",ex_jp:"銀行でお金を下ろしました。",ex_cn:"在銀行領了錢。"},
+    { kanji:"電車",kana:"でんしゃ",meaning:"電車",ex_jp:"電車が遅れています。",ex_cn:"電車在延誤。"},
+    { kanji:"地下鉄",kana:"ちかてつ",meaning:"地下鐵",ex_jp:"地下鉄で通勤しています。",ex_cn:"搭地下鐵通勤。"},
+    { kanji:"病院",kana:"びょういん",meaning:"醫院",ex_jp:"風邪で病院に行きました。",ex_cn:"因為感冒去醫院了。"},
+    { kanji:"料理",kana:"りょうり",meaning:"料理",ex_jp:"日本の料理が好きです。",ex_cn:"喜歡日本料理。"},
+    { kanji:"旅行",kana:"りょこう",meaning:"旅行",ex_jp:"旅行の計画を立てています。",ex_cn:"正在規劃旅行。"},
+    { kanji:"準備",kana:"じゅんび",meaning:"準備",ex_jp:"出発の準備を始めましょう。",ex_cn:"開始做出發的準備吧。"},
+    { kanji:"会議",kana:"かいぎ",meaning:"會議",ex_jp:"明日は重要な会議があります。",ex_cn:"明天有重要會議。"},
+    { kanji:"問題",kana:"もんだい",meaning:"問題",ex_jp:"この問題は難しい。",ex_cn:"這個問題很難。"},
+    { kanji:"説明",kana:"せつめい",meaning:"說明",ex_jp:"説明書を讀んでください。",ex_cn:"請閱讀說明書。"},
+    { kanji:"紹介",kana:"しょうかい",meaning:"介紹",ex_jp:"友達をここに紹介してもいいですか。",ex_cn:"可以介紹朋友給這裡嗎？"},
+    { kanji:"経験",kana:"けいけん",meaning:"經驗",ex_jp:"いろいる経験を重ねてきた。",ex_cn:"累積了各種經驗。"},
+    { kanji:"興味",kana:"きょうみ",meaning:"興趣",ex_jp:"日本文化に興味があります。",ex_cn:"對日本文化有興趣。"},
+    { kanji:"連絡",kana:"れんらく",meaning:"聯絡",ex_jp:"連絡を取ってください。",ex_cn:"請取得聯繫。"},
+    { kanji:"約束",kana:"やくそく",meaning:"約定",ex_jp:"約束は守るべきです。",ex_cn:"應該遵守約定。"},
+    { kanji:"結果",kana:"けっか",meaning:"結果",ex_jp:"結果が出るまで待ってください。",ex_cn:"請等到結果出來。"},
+    { kanji:"理由",kana:"りゆう",meaning:"理由",ex_jp:"理由を教えてください。",ex_cn:"請告訴我理由。"},
+    { kanji:"目的",kana:"もくてき",meaning:"目的",ex_jp:"旅行の目的は文化交流です。",ex_cn:"旅行的目的是文化交流。"},
+    { kanji:"計画",kana:"けいかく",meaning:"計劃",ex_jp:"来年の計画を練っています。",ex_cn:"正在筹划明年的计划。"},
+    { kanji:"関係",kana:"かんけい",meaning:"關係",ex_jp:"彼女とは関係ありません。",ex_cn:"跟她沒有關係。"},
+    { kanji:"場合",kana:"ばあい",meaning:"情況",ex_jp:"病気の場合は連絡してください。",ex_cn:"生病的話請聯絡。"},
+    { kanji:"意見",kana:"いけん",meaning:"意見",ex_jp:"意見を聞かせてください。",ex_cn:"請讓我聽取您的意見。"},
+    { kanji:"必要",kana:"ひつよう",meaning:"必要",ex_jp:"許可が必要です。",ex_cn:"需要許可。"},
+    { kanji:"残念",kana:"ざんねん",meaning:"遺憾",ex_jp:"残念ですが、用事があります。",ex_cn:"很遺憾，但有事。"},
+    { kanji:"面倒",kana:"めんどく",meaning:"麻煩",ex_jp:"手続きが面倒だ。",ex_cn:"手續很麻煩。"},
+    { kanji:"複雑",kana:"ふくざつ",meaning:"複雜",ex_jp:" 件が複雑です。",ex_cn:"案件很複雜。"},
+    { kanji:"確か",kana:"たしか",meaning:"確實",ex_jp:"確か明日开会です。",ex_cn:"確定是明天開會。"},
+    { kanji:"初めて",kana:"はじめて",meaning:"第一次",ex_jp:"日本に来て初めて分かった。",ex_cn:"來到日本才第一次知道。"},
+    { kanji:"流石",kana:"さすが",meaning:"不愧是",ex_jp:"流石に上手ですね。",ex_cn:"果然很厲害呢。"},
+  ],
+  n3: [
+    { kanji:"提供",kana:"ていきょう",meaning:"提供",ex_jp:"情報が 提供されました。",ex_cn:"資訊已被提供。"},
+    { kanji:"影響",kana:"えいきょう",meaning:"影響",ex_jp:"環境に影響を与えています。",ex_cn:"正在影響環境。"},
+    { kanji:"確認",kana:"かくにん",meaning:"確認",ex_jp:"内容を 再確認する。",ex_cn:"再次確認內容。"},
+    { kanji:"開発",kana:"かいはつ",meaning:"開發",ex_jp:"ゲームを 开发しています。",ex_cn:"正在開發遊戲。"},
+    { kanji:"発表",kana:"はっぴょう",meaning:"發表",ex_jp:"研究結果を 发表する。",ex_cn:"發表研究結果。"},
+    { kanji:"推進",kana:"すいしん",meaning:"推進",ex_jp:"政策を 推進する。",ex_cn:"推進政策。"},
+    { kanji:"形成",kana:"けいせい",meaning:"形成",ex_jp:"価値観が 形成される。",ex_cn:"價值觀正在形成。"},
+    { kanji:"実現",kana:"じつげん",meaning:"實現",ex_jp:"夢を 実現したい。",ex_cn:"想要實現夢想。"},
+    { kanji:"処理",kana:"しょり",meaning:"處理",ex_jp:"データが 処理中だ。",ex_cn:"資料正在處理中。"},
+    { kanji:"判断",kana:"はんだん",meaning:"判斷",ex_jp:"状況で 判断が難しい。",ex_cn:"情況判斷很困難。"},
+    { kanji:"期待",kana:"きたい",meaning:"期待",ex_jp:"成功を 期待している。",ex_cn:"期待成功。"},
+    { kanji:"信頼",kana:"しんらい",meaning:"信賴",ex_jp:"相互の 信賴が大切だ。",ex_cn:"相互的信賴很重要。"},
+    { kanji:"安心",kana:"あんしん",meaning:"安心",ex_jp:"問題がないことを確認して 安心した。",ex_cn:"確認沒有問題後安心了。"},
+    { kanji:"議論",kana:"ぎろん",meaning:"議論",ex_jp:"いろいる議論正在进行中。",ex_cn:"各種議論正在進行中。"},
+    { kanji:"理解",kana:"りかい",meaning:"理解",ex_jp:"状況を 理解する。",ex_cn:"理解情況。"},
+    { kanji:"認識",kana:"にんしき",meaning:"認識",ex_jp:"認識を 深める。",ex_cn:"加深認識。"},
+    { kanji:"提案",kana:"ていあん",meaning:"提案",ex_jp:"新しい 提案をする。",ex_cn:"提出新提案。"},
+    { kanji:"対応",kana:"たいおう",meaning:"對應",ex_jp:"状況に 対応する。",ex_cn:"對應情況。"},
+    { kanji:"傾向",kana:"けいこう",meaning:"傾向",ex_jp:"減少傾向に 面している。",ex_cn:"面臨減少傾向。"},
+    { kanji:"解決",kana:"かいけつ",meaning:"解決",ex_jp:"早期の 解決が望まれます。",ex_cn:"希望能早日解決。"},
+    { kanji:"原因",kana:"げんいん",meaning:"原因",ex_jp:"事故の原因を 調査中だ。",ex_cn:"正在調查事故原因。"},
+    { kanji:"以外",kana:"いがい",meaning:"以外",ex_jp:"成功“以 外”也考虑了すべきだ。",ex_cn:"也應該考慮成功以外。"},
+  ],
+  n2: [
+    { kanji:"展開",kana:"てんかい",meaning:"展開",ex_jp:"新しい戦略を展開する。",ex_cn:"展開新戰略。"},
+    { kanji:"評価",kana:"ひょうか",meaning:"評價",ex_jp:"高く評価されている。",ex_cn:"受到高度評價。"},
+    { kanji:"獲得",kana:"かくとく",meaning:"獲得",ex_jp:"資格，获得了。",ex_cn:"獲得了資格。"},
+    { kanji:"達成",kana:"たっせい",meaning:"達成",ex_jp:"目標の達成に貢献した。",ex_cn:"對達成目標有所貢獻。"},
+    { kanji:"深刻",kana:"しんこく",meaning:"嚴重",ex_jp:"深刻化している社会問題。",ex_cn:"日益嚴重的社會問題。"},
+    { kanji:"対比",kana:"たいひ",meaning:"對比",ex_jp:"両案を対比してみる。",ex_cn:"試著對比兩個方案。"},
+    { kanji:"転換",kana:"てんかん",meaning:"轉換",ex_jp:"方針の転換を 要求する。",ex_cn:"要求轉換方針。"},
+    { kanji:"提起",kana:"ていき",meaning:"提出",ex_jp:"問題を提起する。",ex_cn:"提出問題。"},
+    { kanji:"規定",kana:"きてい",meaning:"規定",ex_jp:"法律に規定されている。",ex_cn:"由法律規定。"},
+    { kanji:"解釈",kana:"かいしゃく",meaning:"解釋",ex_jp:"文法の 解釈が困難だ。",ex_cn:"文法的解釋很困難。"},
+    { kanji:"法則",kana:"ほうそく",meaning:"法則",ex_jp:"自然の 法則に従う。",ex_cn:"服從自然法則。"},
+    { kanji:"原則",kana:"げんそく",meaning:"原則",ex_jp:"原則として変更は認めない。",ex_cn:"原則上不允許變更。"},
+    { kanji:"定義",kana:"ていぎ",meaning:"定義",ex_jp:"明確な定義が必要だ。",ex_cn:"需要明確的定義。"},
+    { kanji:"原理",kana:"げんり",meaning:"原理",ex_jp:"動作の原理を理解する。",ex_cn:"理解運作的原理。"},
+    { kanji:"要因",kana:"よういん",meaning:"主要因素",ex_jp:"失敗の 要因を分析する。",ex_cn:"分析失敗的主要因素。"},
+    { kanji:"顕在",kana:"けんざい",meaning:"表面化",ex_jp:"課題が顕在化した。",ex_cn:"課題浮出水面了。"},
+    { kanji:"潜在",kana:"せんざい",meaning:"潛在",ex_jp:"潜在的なリスクが存在する。",ex_cn:"存在潛在風險。"},
+    { kanji:"統合",kana:"とうごう",meaning:"統合",ex_jp:"データを統合する。",ex_cn:"統合數據。"},
+    { kanji:"是正",kana:"ぜせい",meaning:"修正",ex_jp:"差別を 是正する必要がある。",ex_cn:"需要改正差別。"},
+    { kanji:"侵害",kana:"しんがい",meaning:"侵害",ex_jp:"人権を侵害する。",ex_cn:"侵害人權。"},
+    { kanji:"矛盾",kana:"むじゅん",meaning:"矛盾",ex_jp:"論理に矛盾がある。",ex_cn:"邏輯有矛盾。"},
+    { kanji:"象徴",kana:"しょうちょう",meaning:"象徵",ex_jp:"桜は春の象徵だ。",ex_cn:"櫻花是春天的象徵。"},
+    { kanji:"調和",kana:"ちょうわ",meaning:"調和",ex_jp:"自然と建筑的調和を取る。",ex_cn:"與自然和建築取得調和。"},
+    { kanji:"領域",kana:"りょういき",meaning:"領域",ex_jp:"新しい領域に進出する。",ex_cn:"進入新領域。"},
+    { kanji:"執着",kana:"しゅうちゃく",meaning:"執著",ex_jp:"結果に執着しない。",ex_cn:"不要太執著於結果。"},
+    { kanji:"逼迫",kana:"ひっぱく",meaning:"緊迫",ex_jp:"財政が逼迫している。",ex_cn:"財政緊迫。"},
+    { kanji:"概算",kana:"がいさん",meaning:"概算",ex_jp:"費用を概算する。",ex_cn:"概算費用。"},
+    { kanji:"削減",kana:"さくげん",meaning:"削減",ex_jp:"コストを削減する。",ex_cn:"削減成本。"},
+  ],
+  n1: [
+    { kanji:"崩壊",kana:"ほうかい",meaning:"崩壞",ex_jp:" Support崩壊でシステムが停止した。",ex_cn:"因為Support崩潰，系統停止了。"},
+    { kanji:"矛盾",kana:"むじゅん",meaning:"矛盾",ex_jp:"論理の矛盾を突かれた。",ex_cn:"被人戳破了邏輯矛盾。"},
+    { kanji:"象徴",kana:"しょうちょう",meaning:"象徵",ex_jp:"桜は日本の象徵として知られている。",ex_cn:"櫻花作為日本的象徵而聞名。"},
+    { kanji:"補償",kana:"ほしょう",meaning:"補償",ex_jp:"被害者に十分な補償を提供すべきだ。",ex_cn:"應該向受害者提供充足的補償。"},
+    { kanji:"独占",kana:"どくせん",meaning:"獨占",ex_jp:"市場は少数の企業に独占されている。",ex_cn:"市場被少數企業壟斷。"},
+    { kanji:"密集",kana:"みっしゅう",meaning:"密集",ex_jp:"都市への人口密集が加速している。",ex_cn:"人口向城市密集正在加速。"},
+    { kanji:"濫用",kana:"らんよう",meaning:"濫用",ex_jp:"薬の濫用が社会問題化している。",ex_cn:"藥物濫用已成為社會問題。"},
+    { kanji:"調和",kana:"ちょうわ",meaning:"調和",ex_jp:"自然と建築の調和が取れている。",ex_cn:"自然和建築取得了調和。"},
+    { kanji:"領域",kana:"りょういき",meaning:"領域",ex_jp:"新しい研究領域に進出する。",ex_cn:"進入新的研究領域。"},
+    { kanji:"執着",kana:"しゅうちゃく",meaning:"執著",ex_jp:"結果への執着を捨てると、自由になれる。",ex_cn:"放下對結果的執著，就能自由。"},
+    { kanji:"逼迫",kana:"ひっぱく",meaning:"緊迫",ex_jp:"財政逼迫により政策が制限される。",ex_cn:"因財政緊迫，政策受到限制。"},
+    { kanji:"隠蔽",kana:"いんぺい",meaning:"隱蔽",ex_jp:"証拠を隠蔽する行為は許されない。",ex_cn:"掩蓋證據的行為是不可容許的。"},
+    { kanji:"概算",kana:"がいさん",meaning:"概算",ex_jp:"事業の概算を算出する。",ex_cn:"計算事業的概算。"},
+    { kanji:"削減",kana:"さくげん",meaning:"削減",ex_jp:"不必要なコストを削減する必要がある。",ex_cn:"需要削減不必要的成本。"},
+    { kanji:"迫害",kana:"はくが",meaning:"迫害",ex_jp:"政治的迫害を受けて亡命した。",ex_cn:"受到政治迫害而亡命。"},
+    { kanji:"対応",kana:"たいおう",meaning:"對應",ex_jp:"変化に柔軟に対応する。",ex_cn:"靈活應對變化。"},
+    { kanji:"推進",kana:"すいしん",meaning:"推進",ex_jp:"改革を力強く推進する。",ex_cn:"有力地推進改革。"},
+    { kanji:"認識",kana:"にんしき",meaning:"認識",ex_jp:"相互認識を深めることが重要だ。",ex_cn:"加深相互認識很重要。"},
+    { kanji:"展開",kana:"てんかい",meaning:"展開",ex_jp:"新しい戦略を展開する。",ex_cn:"展開新戰略。"},
+    { kanji:"評価",kana:"ひょうか",meaning:"評價",ex_jp:"彼の能力を正しく評価すべきだ。",ex_cn:"應該正確評價他的能力。"},
+    { kanji:"保障",kana:"ほしょう",meaning:"保障",ex_jp:"基本的人権を保障することは国家の義務だ。",ex_cn:"保障基本人權是國家的義務。"},
+    { kanji:"獲得",kana:"かくとく",meaning:"獲得",ex_jp:"竞争优势を獲得することが目標だ。",ex_cn:"獲得競爭優勢是目標。"},
+    { kanji:"達成",kana:"たっせい",meaning:"達成",ex_jp:"目標の達成に貢献したい。",ex_cn:"想為達成目標做出貢獻。"},
+    { kanji:"深刻",kana:"しんこく",meaning:"嚴重",ex_jp:"環境問題が深刻化している。",ex_cn:"環境問題正在加劇。"},
+    { kanji:"法則",kana:"ほうそく",meaning:"法則",ex_jp:"自然界の法則に従う。",ex_cn:"服從自然界的法則。"},
+    { kanji:"原則",kana:"げんそく",meaning:"原則",ex_jp:"原則としてこの規則が適用される。",ex_cn:"原則上適用這條規則。"},
+    { kanji:"定義",kana:"ていぎ",meaning:"定義",ex_jp:"明確に定義されていない概念が多い。",ex_cn:"有很多概念沒有明確定義。"},
+    { kanji:"原理",kana:"げんり",meaning:"原理",ex_jp:"動作の原理を理解することが第一歩だ。",ex_cn:"理解運作原理是第一步。"},
+    { kanji:"要因",kana:"よういん",meaning:"主要原因",ex_jp:"失敗の要因を冷静に分析する。",ex_cn:"冷靜分析失敗的主要原因。"},
+    { kanji:"顕在",kana:"けんざい",meaning:"表面化",ex_jp:"課題が顕在化してきた。",ex_cn:"課題浮出水面了。"},
+    { kanji:"潜在",kana:"せんざい",meaning:"潛在",ex_jp:"潜在的なリスクを十分に評価すべきだ。",ex_cn:"應該充分評估潛在風險。"},
+    { kanji:"統合",kana:"とうごう",meaning:"統合",ex_jp:"データを統合して分析する。",ex_cn:"統合數據進行分析。"},
+    { kanji:"不法",kana:"ふほう",meaning:"非法",ex_jp:"不法侵入は犯罪行為だ。",ex_cn:"非法侵入是犯罪行為。"},
+    { kanji:"排除",kana:"はいじょ",meaning:"排除",ex_jp:"障害物を排除する。",ex_cn:"排除障礙物。"},
+    { kanji:"侵害",kana:"しんがい",meaning:"侵害",ex_jp:"プライバシーを侵害する行为は許されない。",ex_cn:"侵害隱私的行為不可容許。"},
+    { kanji:"拡散",kana:"かくさん",meaning:"擴散",ex_jp:"フェイクニュースが急速に拡散した。",ex_cn:"假新聞迅速擴散。"},
+    { kanji:"崩壊",kana:"ほうかい",meaning:"崩解",ex_jp:"信用が崩壊すると人心が離れる。",ex_cn:"信用崩潰，人心就會背離。"},
+    { kanji:"隠蔽",kana:"いんぺい",meaning:"掩蓋",ex_jp:"事実を隠蔽することは許されない。",ex_cn:"掩蓋事實是不可容許的。"},
+    { kanji:"独占",kana:"どくせん",meaning:"壟斷",ex_jp:"技術の独占は革新を妨げる。",ex_cn:"技術壟斷阻礙創新。"},
+  ]
+};
 
-const GRAMMAR = [
-  { pattern: "～とあらば", note: "假定・逆接", meaning: "既然是…的話", ex_jp: "結果とあらば、しかたがない。", ex_cn: "既然是這個結果，那也沒辦法了。" },
-  { pattern: "～といえど", note: "逆接・讓步", meaning: "雖然說是…", ex_jp: "子供といえど、正確な知識は求められる。", ex_cn: "雖然是小孩子，也需要正確的知識。" },
-  { pattern: "～にとどまらず", note: "範圍擴大", meaning: "不僅限於…", ex_jp: "被害は地元にとどまらず、全国に広がった。", ex_cn: "受害不僅限於當地，還擴大到全國。" },
-  { pattern: "～にはあたらない", note: "價值判斷", meaning: "不必…、不值得…", ex_jp: "驚くにはあたらない。よく考えすぎだ。", ex_cn: "不必吃驚，想太多了。" },
-  { pattern: "～眉を顰める", note: "表情・態度", meaning: "皺眉", ex_jp: "污職の可能性に人々は眉を顰めた。", ex_cn: "人們對污職的可能性皺起了眉頭。" },
-  { pattern: "～の至り", note: "程度・狀態", meaning: "…之至", ex_jp: "ご支援を赐り、感激の至りです。", ex_cn: "得到您的支持，感激之至。" },
-  { pattern: "～の也不け", note: "逆接假定", meaning: "即使…也", ex_jp: "知らせてもらったشرح我也不け、履行します。", ex_cn: "即使被提醒了，也會履行。" },
-  { pattern: "～沾しません", note: "態度・決心", meaning: "不惜…", ex_jp: "成功沾しません、常に努力している。", ex_cn: "不惜成功，始終努力。" },
-  { pattern: "～涉る", note: "動作・相關", meaning: "涉及、關聯", ex_jp: "この事件は政界涉る大问题だ。", ex_cn: "這事件是涉及政界的大問題。" },
-  { pattern: "～抗う", note: "意志・抵抗", meaning: "反抗、抗拒", ex_jp: "運命に抗うのは難しい。", ex_cn: "反抗命運是很難的。" },
-  { pattern: "～を素に", note: "依據・根據", meaning: "基於…", ex_jp: "事実を素に調査を進める。", ex_cn: "基於事實推進調查。" },
-  { pattern: "～に至る", note: "結果・終點", meaning: "直到…、達成…", ex_jp: "混乱は混乱直至今日に至った。", ex_cn: "混亂持續到今天。" },
-  { pattern: "～涉り", note: "範圍・領域", meaning: "關於…、涉及…", ex_jp: "宇宙開発涉り、国際協力が求められる。", ex_cn: "關於宇宙開發，需要國際合作。" },
-  { pattern: "～抗って", note: "逆動・反抗", meaning: "抗拒著…", ex_jp: "彼は痛み抗って仕事続けた。", ex_cn: "他抗拒著疼痛繼續工作。" },
-  { pattern: "～至上の", note: "程度・評価", meaning: "至高無上的…", ex_jp: "患者Payload至上の医疗为目标としている。", ex_cn: "以患者至上的醫療為目標。" },
-  { pattern: "～一遍に", note: "時間・瞬間", meaning: "一瞬間…", ex_jp: "人気投票で一遍に有名になった。", ex_cn: "在人氣投票中一瞬間成名了。" },
-  { pattern: "～もさることながら", note: "讓步・遞進", meaning: "…固然…也更…", ex_jp: "量もさることながら、質も問題だ。", ex_cn: "數量固然有問題，質量更是。" },
-  { pattern: "～tentatively", note: "様態・状態", meaning: "似乎…", ex_jp: "彼を試发现有るverb。", ex_cn: "試圖試探他。" },
-  { pattern: "～まがい", note: "類似・類似", meaning: "類似…的東西", ex_jp: "これは芸術まがいの作品だ。", ex_cn: "這是類似藝術的作品。" },
-  { pattern: "～めいた", note: "様態・様子", meaning: "帶有…氣息的", ex_jp: "彼の発言は命令めいた響きがあった。", ex_cn: "他的發言帶有命令的語氣。" },
-  { pattern: "～ずくめ", note: "全部・一律", meaning: "全是…、一律…", ex_jp: "この部は黒ずくめの服を着ている。", ex_cn: "這部門的人都穿全身黑的衣服。" },
-  { pattern: "～めきめき", note: "變化・程度", meaning: "顯著地…、快速地…", ex_jp: "日本語がめきめき上手になった。", ex_cn: "日文顯著地進步了。" },
-  { pattern: "～ものの一", note: "逆接・讓步", meaning: "雖然…但是…", ex_jp: "低いものは一つしかない。", ex_cn: "雖然低但只有一個。" },
-  { pattern: "～と踌む", note: "表情・態度", meaning: "躊躇、猶豫", ex_jp: "実施と踌み、様子を見守る。", ex_cn: "躊躇實施，觀察情況。" },
-  { pattern: "～に層く", note: "接觸・到達", meaning: "堆積在…上", ex_jp: "疑問が層いて理解できなくなった。", ex_cn: "疑問堆積起來，變得無法理解了。" },
-  { pattern: "～に抗う", note: "逆動・反抗", meaning: "對抗…", ex_jp: "権力，抗うことは危険だ。", ex_cn: "對抗權力是危險的。" },
-  { pattern: "～の至りで", note: "程度・状態", meaning: "…之至", ex_jp: "お邪魔したことの抱歉の至りでございます。", ex_cn: "對於打擾您一事，抱歉之至。" },
-  { pattern: "～も甚だしい", note: "程度・評価", meaning: "…之甚", ex_jp: "この行為は自己중심も甚だしい。", ex_cn: "這個行為真是太以自我為中心了。" },
-  { pattern: "～に触れ", note: "接觸・相關", meaning: "觸及…", ex_jp: "本質に触れず、表面的議論に終始した。", ex_cn: "沒有觸及本質，始終停留在表面討論。" },
-  { pattern: "～に触れる", note: "接觸・話題", meaning: "接觸到…", ex_jp: "この本では歴史的重大事件に触れている。", ex_cn: "這本書觸及了歷史上的重大事件。" },
-  { pattern: "～涉りの", note: "範圍・関連", meaning: "關於…的", ex_jp: "宇宙開発涉りの會議が開かれた。", ex_cn: "召開了關於宇宙開發的會議。" },
-  { pattern: "～に笑い", note: "表情・反応", meaning: "笑…", ex_jp: "内容に笑わずにはいられなかった。", ex_cn: "不禁笑了出來。" },
-  { pattern: "～至難の業", note: "程度・評価", meaning: "極為困難的事", ex_jp: "一晩で完成するのは至難の業だ。", ex_cn: "一晚完成是極為困難的事。" },
-  { pattern: "～沾して", note: "程度・状態", meaning: "不惜…", ex_jp: "命沾して国を守った。", ex_cn: "不惜生命保衛了國家。" },
-  { pattern: "～の催し", note: " событие", meaning: "…的活動", ex_jp: "今夜は彼の、送別の催しがある。", ex_cn: "今晚有他的歡送會。" },
-  { pattern: "～に蹄る", note: "接觸・相關", meaning: "趕上…、達到…", ex_jp: "目標に蹄るまで努力を続ける。", ex_cn: "繼續努力直到達到目標。" },
-  { pattern: "～に後れ", note: "順序・遅延", meaning: "落後於…", ex_jp: "他社に後れを取る可能性がある。", ex_cn: "可能會落後於其他公司。" },
-  { pattern: "～に薄く", note: "程度・様子", meaning: "略帶…", ex_jp: "その絵は青に薄い。", ex_cn: "那幅畫略帶藍色。" },
-  { pattern: "～と為す", note: "結果・変化", meaning: "變成…", ex_jp: "雨は水と為して地にわたる。", ex_cn: "雨化作水落在地上。" },
-  { pattern: "～に超たない", note: "程度・上限", meaning: "不超過…", ex_jp: "参加者は10手に超たない。", ex_cn: "參加者不超過十人。" },
-  { pattern: "～の巧み", note: "技術・能力", meaning: "…的巧妙", ex_jp: "作者の表現の巧みには感心する。", ex_cn: "佩服作者表現的巧妙。" },
-  { pattern: "～び Virtue", note: "様態・様子", meaning: "…的様子", ex_jp: "彼は無事存活的最期を遂げた。", ex_cn: "他安然地度過了最後一刻。" },
-  { pattern: "～も方便か", note: "讓步・理由", meaning: "即使說是…", ex_jp: " humourも方便かで、本気ではない。", ex_cn: "即使是開玩笑，也是認真的。" },
-  { pattern: "～に始まり", note: "開始・起點", meaning: "始於…", ex_jp: "すべては一杯のコーヒーから始まった。", ex_cn: "一切都是從一杯咖啡開始的。" },
-  { pattern: "～に始まる", note: "原因・理由", meaning: "由…引起", ex_jp: "その出来事が元結末の始まりだ。", ex_cn: "那個事件就是結局的開始。" },
-];
+const GRAMMAR = {
+  n5: [
+    { pattern:"～は ～です",note:"判斷",meaning:"～是～",ex_jp:"私は学生です。",ex_cn:"我是學生。"},
+    { pattern:"～は ～ではありません",note:"否定",meaning:"～不是～",ex_jp:"彼は日本人ではありません。",ex_cn:"他不是日本人。"},
+    { pattern:"～を ～ます",note:"他動詞",meaning:"做～",ex_jp:"本を読みます。",ex_cn:"看書。"},
+    { pattern:"～に ～ます",note:"移動",meaning:"去～",ex_jp:"学校に行きます。",ex_cn:"去學校。"},
+    { pattern:"～で ～ます",note:"場所",meaning:"在～做～",ex_jp:"図書館で勉强します。",ex_cn:"在圖書館讀書。"},
+    { pattern:"～があります/います",note:"存在",meaning:"有～",ex_jp:"部屋に猫がいます。",ex_cn:"房間裡有貓。"},
+    { pattern:"～てください",note:"請求",meaning:"請做～",ex_jp:"もう少し待ってください。",ex_cn:"請再等一下。"},
+    { pattern:"～たいです",note:"欲望",meaning:"想要～",ex_jp:"日本に行きたいです。",ex_cn:"想要去日本。"},
+    { pattern:"～ましょうか",note:"提議",meaning:"一起～好嗎？",ex_jp:"お茶を飲みましょうか。",ex_cn:"一起喝茶好嗎？"},
+    { pattern:"～ことがあります",note:"經驗",meaning:"曾經～過",ex_jp:"日本に来たことがあります。",ex_cn:"曾經去過日本。"},
+    { pattern:"～てくださいました",note:"恩惠",meaning:"（別人）幫我做～",ex_jp:"先生が教えてくれました。",ex_cn:"老師教了我。"},
+    { pattern:"～という名前",note:"命名",meaning:"叫做～",ex_jp:"この花という名前です。",ex_cn:"這叫做這個名字的花。"},
+    { pattern:"～は～より～です",note:"比較",meaning:"～比～更～",ex_jp:"今日は昨日より暑いです。",ex_cn:"今天比昨天熱。"},
+    { pattern:"～でしょう",note:"推測",meaning:"大概～吧",ex_jp:"明日は雨でしょう。",ex_cn:"明天大概會下雨吧。"},
+    { pattern:"～てください",note:"動作指示",meaning:"做～給我看",ex_jp:"聞かせてください。",ex_cn:"讓我聽聽看。"},
+  ],
+  n4: [
+    { pattern:"～ので、～",note:"原因",meaning:"因為～所以～",ex_jp:"雨が降ったので、試合が中止になった。",ex_cn:"因為下雨了，比賽取消了。"},
+    { pattern:"～ために、～",note:"原因",meaning:"因為～而～",ex_jp:"事故のために電車が遅れている。",ex_cn:"因為事故電車延誤了。"},
+    { pattern:"～かもしれません",note:"推測",meaning:"也許～",ex_jp:"彼女は来ないかもしれません。",ex_cn:"她也許不會來。"},
+    { pattern:"～ようです",note:"様態",meaning:"好像～",ex_jp:"彼はまだ寝ているようです。",ex_cn:"他好像還在睡。"},
+    { pattern:"～ことができます",note:"能力",meaning:"會～",ex_jp:"日本語を話すことができます。",ex_cn:"會說日語。"},
+    { pattern:"～つもりです",note:"計畫",meaning:"打算～",ex_jp:"来年日本へ旅行するつもりです。",ex_cn:"打算明年去日本旅行。"},
+    { pattern:"～必要があります",note:"必要性",meaning:"需要～",ex_jp:"準備する必要があります。",ex_cn:"需要做準備。"},
+    { pattern:"～そうです（傳聞）",note:"傳聞",meaning:"據說～",ex_jp:"明日雨が降るそうです。",ex_cn:"據說明天會下雨。"},
+    { pattern:"～方がいです",note:"建議",meaning:"做～比較好",ex_jp:"予約した方がいいです。",ex_cn:"預約比較好。"},
+    { pattern:"～ことがあります",note:"偶發",meaning:"有時會～",ex_jp:"一人で寂しくなることがあります。",ex_cn:"有時會感到孤單。"},
+    { pattern:"～ようになります",note:"能力變化",meaning:"變得會～",ex_jp:"日本語が話せるようになりました。",ex_cn:"變得會說日語了。"},
+    { pattern:"～してくれた/してくれました",note:"恩惠",meaning:"幫我做～",ex_jp:"友達が帮我掃除してくれた。",ex_cn:"朋友幫我打掃了。"},
+    { pattern:"～やすい/にくい",note:"容易/困難",meaning:"容易～/難以～",ex_jp:"この説明は易懂しいです。",ex_cn:"這個說明很容易懂。"},
+    { pattern:"～そうです（様態）",note:"様態",meaning:"看起來～",ex_jp:"雨が降りそうです。",ex_cn:"看起來要下雨了。"},
+    { pattern:"～そうです（傳聞）",note:"傳聞",meaning:"聽說～",ex_jp:"彼冗談だそうだ。",ex_cn:"聽說他是認真的。"},
+  ],
+  n3: [
+    { pattern:"～ために、～",note:"目的",meaning:"為了～",ex_jp:"合格するために、一生懸命勉强した。",ex_cn:"為了及格拼命學習。"},
+    { pattern:"～によると、～",note:"傳聞依據",meaning:"根據～",ex_jp:"天気予報によると、明日雨が降るそうだ。",ex_cn:"根據天氣預報，明天會下雨。"},
+    { pattern:"～ようにする",note:"努力",meaning:"設法做到～",ex_jp:"毎日運動するようにしている。",ex_cn:"設法每天運動。"},
+    { pattern:"～ことになる",note:"決定",meaning:"決定是～",ex_jp:"来月転勤することになった。",ex_cn:"決定下個月調職。"},
+    { pattern:"～のは～からだ",note:"原因",meaning:"～是因為～",ex_jp:"遅刻したのは電車が遅れたからだ。",ex_cn:"遲到是因為電車延誤了。"},
+    { pattern:"～を通じて/を通して",note:"媒介",meaning:"通過～",ex_jp:"読書を通じて知識能得到する。",ex_cn:"通過讀書可以得到知識。"},
+    { pattern:"～に問わず/に関わらず",note:"不管",meaning:"不管～",ex_jp:"天候に関わらず、旅行に行く。",ex_cn:"不管天氣如何都去旅行。"},
+    { pattern:"～恐れがある",note:"擔憂",meaning:"恐怕會～",ex_jp:"大雨による洪水の恐れがある。",ex_cn:"恐怕會因大雨而洪水。"},
+    { pattern:"～一方だ",note:"趨勢",meaning:"越來越～",ex_jp:"状況は悪化する一方だ。",ex_cn:"情況越來越惡化。"},
+    { pattern:"～上に",note:"累加",meaning:"不僅～而且～",ex_jp:"道に迷った上に、雨に濡れた。",ex_cn:"不僅迷了路還被雨淋濕。"},
+    { pattern:"～反面/～半面",note:"對照",meaning:"～的另一方面",ex_jp:"量は多い反面、質は悪い。",ex_cn:"量多但質差。"},
+    { pattern:"～を始めとして",note:"代表性",meaning:"以～為首",ex_jp:"東京を始めとする主要都市。",ex_cn:"以東京為首的主要城市。"},
+    { pattern:"～かけだ/かけの",note:"尚未完成",meaning:"正在～中途",ex_jp:"ご飯を食べかけです。",ex_cn:"飯吃一半。"},
+    { pattern:"～だらけ",note:"充滿",meaning:"全是～",ex_jp:"部屋はごみだらけだ。",ex_cn:"房間全是垃圾。"},
+    { pattern:"～げだ",note:"様態",meaning:"似乎～",ex_jp:"不安そうですね。",ex_cn:"看起來很不安。"},
+  ],
+  n2: [
+    { pattern:"～を通じて/～を経て",note:"過程",meaning:"通過～/經過～",ex_jp:"苦労を経て、強くなった。",ex_cn:"經過辛苦變堅強了。"},
+    { pattern:"～に伴い/～に従い",note:"伴隨",meaning:"隨著～",ex_jp:"年齢に伴い、体力が低下する。",ex_cn:"隨著年齡體力下降。"},
+    { pattern:"～ながらも",note:"逆接",meaning:"雖然～但是～",ex_jp:"有限ながらも努力を続ける。",ex_cn:"雖然有限但繼續努力。"},
+    { pattern:"～にとどまらず",note:"範圍擴大",meaning:"不僅限於～",ex_jp:"国内にとどまらず、世界に進出した。",ex_cn:"不僅限於國內，還擴展到世界。"},
+    { pattern:"～はもとより",note:"不用说",meaning:"不用說～也～",ex_jp:"子供はもとより、大人も楽しい。",ex_cn:"不用說小孩，大人也很快樂。"},
+    { pattern:"～をものともせず",note:"克服",meaning:"不怕～",ex_jp:"困難をものともせず前に進む。",ex_cn:"不怕困難向前邁進。"},
+    { pattern:"～いかんだ",note:"取決於",meaning:"取決於～",ex_jp:"努力いかんで結果が変わる。",ex_cn:"取決於努力結果會改變。"},
+    { pattern:"～んばかりに",note:"即將",meaning:"幾乎要～",ex_jp:"泣かんばかりに嬉しい。",ex_cn:"高興得幾乎要哭。"},
+    { pattern:"～反面",note:"對照",meaning:"～但另一方面",ex_jp:"便利な反面、プライバシー 문제가 있다。",ex_cn:"方便但另一方面有隱私問題。"},
+    { pattern:"～ながらも",note:"逆接",meaning:"雖然～",ex_jp:"知っていながらも、報告しなかった。",ex_cn:"雖然知道，但沒有報告。"},
+    { pattern:"～つつある",note:"逐漸",meaning:"正在逐漸～",ex_jp:"状況は改善されつつある。",ex_cn:"情況正在逐漸改善。"},
+    { pattern:"～至上/～第一",note:"最優先",meaning:"～至上",ex_jp:"顧客至上主义の弊害。",ex_cn:"顧客至上主義的弊害。"},
+    { pattern:"～有關/～に関する",note:"關於",meaning:"關於～",ex_jp:"環境問題に関する會議を開いた。",ex_cn:"召開了關於環境問題的會議。"},
+    { pattern:"～を踏まえて",note:"根據",meaning:"基於～",ex_jp:"実データを踏まえて検討する。",ex_cn:"基於實際數據來檢討。"},
+    { pattern:"～也得/～也得なく",note:"無需",meaning:"不必～",ex_jp:"説明，还得上げる也得ない。",ex_cn:"不必多解釋。"},
+  ],
+  n1: [
+    { pattern:"～いかんだ/～いかんで",note:"取決於",meaning:"取決於～",ex_jp:"状況いかんで判断する。",ex_cn:"取決於情況來判斷。"},
+    { pattern:"～んばかりに/んばかり",note:"即將",meaning:"眼看就要～",ex_jp:"破裂んばかりの状態だった。",ex_cn:"眼看就要破裂的狀態。"},
+    { pattern:"～をものともせず（して）",note:"克服",meaning:"不怕～",ex_jp:"艱難をものともせず前進した。",ex_cn:"不怕艱難向前進。"},
+    { pattern:"～なくして（は）",note:"條件",meaning:"沒有～就沒有～",ex_jp:"努力なくして成功はない。",ex_cn:"沒有努力就沒有成功。"},
+    { pattern:"～たalia/～aliaが",note:"雖然",meaning:"雖然～可是～",ex_jp:"知っていalia、执行しなかった。",ex_cn:"雖然知道，卻沒有實行。"},
+    { pattern:"～顾不上/～に顧みず",note:"不管",meaning:"不顧～",ex_jp:"批判に顧みず実行した。",ex_cn:"不顧批判實行了。"},
+    { pattern:"～きわまりない/きわまる",note:"極端",meaning:"極其～",ex_jp:"それは図々きわまりない要求だ。",ex_cn:"那是極其厚顏的要求。"},
+    { pattern:"～までのことだ",note:"無所謂",meaning:"只不過是～罷了",ex_jp:"失敗しても逃げないまでのことだ。",ex_cn:"就算失敗也不過是不逃跑罷了。"},
+    { pattern:"～ということだ",note:"結論",meaning:"也就是說～",ex_jp:"来月から値上がりするということです。",ex_cn:"也就是說從下個月開始漲價。"},
+    { pattern:"～とは限らない",note:"反對",meaning:"不一定～",ex_jp:"有钱とは限らない。",ex_cn:"有錢人不一定幸福。"},
+    { pattern:"～极まる/极ての",note:"程度",meaning:"極其～",ex_jp:"迷惑極まる行為だ。",ex_cn:"是極其惡意的行為。"},
+    { pattern:"～に至る/至り",note:"到達",meaning:"直至～",ex_jp:"問題を指摘直至う。",ex_cn:"直至指出問題。"},
+    { pattern:"～合って/も合って",note:"逆接",meaning:"雖然～也～",ex_jp:"興味合って、忙しくて参加できない。",ex_cn:"雖然有興趣，但忙得無法參加。"},
+    { pattern:"～顾不上/～に顧みず",note:"不管",meaning:"不管～",ex_jp:"経費に顧みず、最善を尽くす。",ex_cn:"不管經費，盡最大努力。"},
+    { pattern:"～もさることながら",note:"遞進",meaning:"～固然～也更～",ex_jp:"量もさることながら、質も問題だ。",ex_cn:"數量固然有問題，質量更是。"},
+    { pattern:"～を皮切りに",note:"開始",meaning:"以～為開端",ex_jp:"東京を皮切りに、全国でイベントが始まった。",ex_cn:"以東京為開端，全國開始了活動。"},
+    { pattern:"～ましに",note:"越來越",meaning:"越來越～",ex_jp:"状況は悪化するましにだった。",ex_cn:"情況越來越惡化。"},
+    { pattern:"～きらいがある",note:"傾向",meaning:"有～的傾向",ex_jp:"自分の考えに偏るきらいがある。",ex_cn:"有偏頗自己想法的傾向。"},
+    { pattern:"～uance",note:"様態",meaning:"似乎～",ex_jp:"彼が嘘をついている可以看到ない。",ex_cn:"似乎可以看出他在說謊。"},
+    { pattern:"～こなっている",note:"完成",meaning:"已經～完了",ex_jp:"形できていない。",ex_cn:"還沒有形成。"},
+    { pattern:"～とされている",note:"認為",meaning:"被認為是～",ex_jp:"これは効果的とされている。",ex_cn:"這被認為是有效的。"},
+    { pattern:"～折衝/～折衝の",note:"交渉",meaning:"～之交涉",ex_jp:"工事，工程與，折衝まった。",ex_cn:"與工程方交涉完了。"},
+    { pattern:"～つ子里/～つ子里で",note:"一邊～一邊",meaning:"一邊～一邊～",ex_jp:"歩きつ子里で考えを纞めた。",ex_cn:"一邊走一邊整理思緒。"},
+    { pattern:"～まみれ",note:"充滿",meaning:"充滿～",ex_jp:"汗まみれになった。",ex_cn:"滿身是汗。"},
+    { pattern:"～のなんのって",note:"強調",meaning:"簡直是～不得了",ex_jp:"寒なんのって、手が凍える。",ex_cn:"簡直冷得凍手。"},
+  ]
+};
 
-let currentTab = 'vocab';
+let currentLevel = 'n5';
+let currentType = 'vocab';
 let currentIndex = 0;
 
-function showTab(tab) {
-  currentTab = tab;
+function setLevel(lvl) {
+  currentLevel = lvl;
   currentIndex = 0;
-  document.getElementById('vocabTab').style.display = tab === 'vocab' ? 'block' : 'none';
-  document.getElementById('grammarTab').style.display = tab === 'grammar' ? 'block' : 'none';
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.textContent.includes(tab === 'vocab' ? '單字' : '文法')));
-  updateCard();
-  updateProgress();
+  document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.level-btn.${lvl}`).classList.add('active');
+  update();
 }
 
-function updateCard() {
-  const tab = document.getElementById(currentTab === 'vocab' ? 'vocabTab' : 'grammarTab');
-  if (currentTab === 'vocab') {
-    if (currentIndex >= VOCAB.length) {
-      tab.innerHTML = `<div class="end-card"><div class="icon">🎉</div><h3>單字複習完畢！</h3><p>共 ${VOCAB.length} 個詞彙</p></div>`;
-    } else {
-      const v = VOCAB[currentIndex];
-      tab.innerHTML = buildVocabCard(v, currentIndex);
-    }
+function setType(type) {
+  currentType = type;
+  currentIndex = 0;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.type-btn:nth-child(${type === 'vocab' ? 1 : 2})`).classList.add('active');
+  update();
+}
+
+function getItems() {
+  return currentType === 'vocab' ? VOCAB[currentLevel] : GRAMMAR[currentLevel];
+}
+
+function update() {
+  const items = getItems();
+  const total = items.length;
+  document.getElementById('progressFill').style.width = total ? `${(currentIndex / total) * 100}%` : '0%';
+  document.getElementById('progressText').textContent = `${currentIndex + 1} / ${total} 已學習`;
+
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  prevBtn.disabled = currentIndex === 0;
+  nextBtn.textContent = currentIndex >= total - 1 ? '重新開始 →' : '下一個 →';
+
+  const el = document.getElementById('content');
+  if (currentIndex >= total) {
+    el.innerHTML = `<div class="end-card"><div class="icon">🎉</div><h3>${currentType === 'vocab' ? '單字' : '文法'}複習完畢！</h3><p>共 ${total} 個詞彙</p></div>`;
+    return;
+  }
+
+  const item = items[currentIndex];
+  if (currentType === 'vocab') {
+    el.innerHTML = `<div class="card">
+      <div class="card-top">
+        <div>
+          <div class="kanji">${item.kanji}</div>
+          <div class="kana">${item.kana}</div>
+        </div>
+        <span class="level-tag ${currentLevel}">${currentLevel.toUpperCase()}</span>
+      </div>
+      <div class="meaning">${item.meaning}</div>
+      <div class="example">
+        <div class="example-jp">${item.ex_jp}</div>
+        <div class="example-cn">${item.ex_cn}</div>
+      </div>
+    </div>`;
   } else {
-    if (currentIndex >= GRAMMAR.length) {
-      tab.innerHTML = `<div class="end-card"><div class="icon">🎉</div><h3>文法學習完畢！</h3><p>共 ${GRAMMAR.length} 個句型</p></div>`;
-    } else {
-      const g = GRAMMAR[currentIndex];
-      tab.innerHTML = buildGrammarCard(g, currentIndex);
-    }
-  }
-  updateNavButtons();
-}
-
-function buildVocabCard(v, i) {
-  return `<div class="card">
-  <div class="card-top">
-    <div>
-      <div class="kanji">${v.kanji}</div>
-      <div class="kana">${v.kana}</div>
-    </div>
-    <span class="level-badge n1">N1</span>
-  </div>
-  <div class="meaning">${v.meaning}</div>
-  <div class="example">
-    <div class="example-jp">${v.ex_jp}</div>
-    <div class="example-cn">${v.ex_cn}</div>
-  </div>
-</div>`;
-}
-
-function buildGrammarCard(g, i) {
-  return `<div class="grammar-card">
-  <div class="card-top">
-    <div class="pattern">${g.pattern}</div>
-    <span class="level-badge gram">文法</span>
-  </div>
-  <div class="pattern-note">${g.note || ''}</div>
-  <div class="meaning-gr">${g.meaning}</div>
-  <div class="example-gr">
-    <div class="example-gr-jp">${g.ex_jp}</div>
-    <div class="example-gr-cn">${g.ex_cn}</div>
-  </div>
-</div>`;
-}
-
-function nextCard() {
-  const max = currentTab === 'vocab' ? VOCAB.length : GRAMMAR.length;
-  if (currentIndex < max) {
-    currentIndex++;
-    updateCard();
-    updateProgress();
+    el.innerHTML = `<div class="grammar-card">
+      <div class="pattern">${item.pattern}</div>
+      <div class="pattern-note">${item.note || ''}</div>
+      <div class="meaning-gr">${item.meaning}</div>
+      <div class="example-gr">
+        <div class="example-gr-jp">${item.ex_jp}</div>
+        <div class="example-gr-cn">${item.ex_cn}</div>
+      </div>
+    </div>`;
   }
 }
 
-function prevCard() {
-  if (currentIndex > 0) {
-    currentIndex--;
-    updateCard();
-    updateProgress();
-  }
-}
+function prev() { if (currentIndex > 0) { currentIndex--; update(); } }
+function next() { const items = getItems(); currentIndex = currentIndex >= items.length - 1 ? 0 : currentIndex + 1; update(); }
 
-function updateNavButtons() {
-  const max = currentTab === 'vocab' ? VOCAB.length : GRAMMAR.length;
-  document.getElementById('prevBtn').disabled = currentIndex === 0;
-  document.getElementById('nextBtn').disabled = currentIndex >= max;
-}
-
-function updateProgress() {
-  const max = currentTab === 'vocab' ? VOCAB.length : GRAMMAR.length;
-  const pct = max > 0 ? (currentIndex / max * 100) : 0;
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressText').textContent = `${currentIndex} / ${max} 已復習`;
-}
-
-showTab('vocab');
+update();
 </script>
 </body>
 </html>
